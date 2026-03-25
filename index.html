@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script>
+      // Prevent stale cached index by forcing a minute-versioned URL without hard refresh.
+      const version = Math.floor(Date.now() / 60000).toString();
+      const currentUrl = new URL(location.href);
+      if (new URL(location.href).searchParams.get('v') !== version) {
+        currentUrl.searchParams.set('v', version);
+        const updatedUrl = currentUrl.toString();
+        location.replace(updatedUrl);
+      }
+    </script>
+<title>Study Master - Your Personal Learning Space</title>
+    <!-- Assets are loaded with cache-busting by the bootstrap script below -->
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <h1>📚 Study Master</h1>
+                <p class="tagline">Your path to mastery starts here</p>
+            </div>
+            <div class="progress-badge">
+                <span id="progress-text">0%</span>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progress-fill"></div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Inspirational Quote -->
+        <div class="inspiration-box">
+            <p id="inspiration-quote" class="quote">✨ Every master was once a beginner. You've got this! ✨</p>
+        </div>
+
+        <!-- Main Menu -->
+        <main class="main-content">
+            <!-- Home View -->
+            <section id="home-view" class="view active">
+                <div class="menu-grid">
+                    <button class="menu-btn btn-study" onclick="showView('study-view')">
+                        <span class="btn-icon">📖</span>
+                        <span class="btn-text">Study Mode</span>
+                        <span class="btn-desc">Learn with flashcards</span>
+                    </button>
+                    <button class="menu-btn btn-quiz" onclick="showView('quiz-view')">
+                        <span class="btn-icon">🎯</span>
+                        <span class="btn-text">Quiz Mode</span>
+                        <span class="btn-desc">Test your knowledge</span>
+                    </button>
+                    <button class="menu-btn btn-game-mode" onclick="showView('game-view')">
+                        <span class="btn-icon">G</span>
+                        <span class="btn-text">Game Mode</span>
+                        <span class="btn-desc">Term challenge with score and streaks</span>
+                    </button>
+                    <button class="menu-btn btn-categories" onclick="showView('categories-view')">
+                        <span class="btn-icon">📋</span>
+                        <span class="btn-text">By Category</span>
+                        <span class="btn-desc">Focus on topics</span>
+                    </button>
+                    <button class="menu-btn btn-stats" onclick="showView('stats-view')">
+                        <span class="btn-icon">📊</span>
+                        <span class="btn-text">Your Stats</span>
+                        <span class="btn-desc">Track progress</span>
+                    </button>
+                    <button class="menu-btn btn-learn-fast" onclick="showView('learn-fast-view')">
+                        <span class="btn-icon">⚡</span>
+                        <span class="btn-text">Learn Fast</span>
+                        <span class="btn-desc">Best way to learn these quickly</span>
+                    </button>
+                    <button class="menu-btn btn-punctuation-watchouts" onclick="showView('punctuation-watchouts-view')">
+                        <span class="btn-icon">✍️</span>
+                        <span class="btn-text">Punctuation Watchouts</span>
+                        <span class="btn-desc">Easy-miss punctuation checklist</span>
+                    </button>
+                </div>
+            </section>
+
+            <!-- Study View -->
+            <section id="study-view" class="view">
+                <div class="view-header">
+                    <button class="back-btn" onclick="showView('home-view')">&larr; Back</button>
+                    <h2>Flashcard Study</h2>
+                </div>
+
+                <div id="category-select" class="category-select">
+                    <label>Select Category:</label>
+                    <select id="categoryDropdown" onchange="loadCategory(this.value, 'study')">
+                        <option value="">All Terms</option>
+                    </select>
+                </div>
+
+                <div class="flashcard-container">
+                    <div class="card-counter">
+                        <span id="current-card">1</span> / <span id="total-cards">0</span>
+                    </div>
+
+                    <div class="flashcard" id="flashcard" onclick="flipCard()">
+                        <div class="flashcard-inner">
+                            <div class="flashcard-front">
+                                <p id="card-term">Loading...</p>
+                                <p class="flip-hint">Click to reveal answer</p>
+                            </div>
+                            <div class="flashcard-back">
+                                <p id="card-definition">Loading...</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex-badge" id="flex-badge"></div>
+
+                    <div class="card-controls">
+                        <button class="control-btn prev-btn" onclick="previousCard()">← Previous</button>
+                        <button class="control-btn next-btn" onclick="nextCard()">Next →</button>
+                    </div>
+
+                    <div class="card-actions">
+                        <button class="action-btn mark-btn" id="mark-btn" onclick="toggleMark()">📌 Mark</button>
+                        <button class="action-btn shuffle-btn" onclick="shuffleCards()">🔀 Shuffle</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Quiz View -->
+            <section id="quiz-view" class="view">
+                <div class="view-header">
+                    <button class="back-btn" onclick="showView('home-view')">&larr; Back</button>
+                    <h2>Quiz Time</h2>
+                </div>
+
+                <div id="quiz-setup" class="quiz-setup">
+                    <div class="setup-form">
+                        <div class="form-group">
+                            <label>Select Category:</label>
+                            <select id="quizCategoryDropdown" onchange="loadCategory(this.value, 'quiz')">
+                                <option value="">All Terms</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Number of Questions:</label>
+                            <input type="number" id="quizQuestions" value="10" min="1" max="50">
+                        </div>
+                        <button class="start-btn" onclick="startQuiz()">Start Quiz 🚀</button>
+                    </div>
+                </div>
+
+                <div id="quiz-content" class="quiz-content hidden">
+                    <div class="quiz-progress">
+                        <div class="quiz-counter">Question <span id="quiz-current">1</span> of <span id="quiz-total">10</span></div>
+                        <div class="quiz-progress-bar">
+                            <div class="quiz-progress-fill" id="quiz-progress-fill"></div>
+                        </div>
+                    </div>
+
+                    <div class="quiz-question">
+                        <h3 id="quiz-question-text">Question text</h3>
+                        <div class="quiz-options" id="quiz-options"></div>
+                    </div>
+
+                    <div class="quiz-actions">
+                        <button class="quiz-btn" id="submit-answer-btn" onclick="submitAnswer()">Submit Answer</button>
+                    </div>
+                </div>
+
+                <div id="quiz-results" class="quiz-results hidden">
+                    <!-- Results will be populated here -->
+                </div>
+            </section>
+
+            <!-- Game View -->
+            <section id="game-view" class="view">
+                <div class="view-header">
+                    <button class="back-btn" onclick="showView('home-view')">&larr; Back</button>
+                    <h2>Term Challenge</h2>
+                </div>
+
+                <div id="game-setup" class="game-setup">
+                    <div class="setup-form game-setup-form">
+                        <div class="form-group">
+                            <label>Select Category:</label>
+                            <select id="gameCategoryDropdown">
+                                <option value="">All Categories</option>
+                            </select>
+                        </div>
+                        <button class="start-btn" onclick="startGame()">Start Challenge</button>
+                    </div>
+                </div>
+
+                <div id="game-live" class="game-live hidden">
+                    <div class="game-scoreboard">
+                        <div class="game-chip">Level: <span id="game-level">1</span></div>
+                        <div class="game-chip">Level Score: <span id="game-level-score">0</span>/<span id="game-level-size">10</span></div>
+                        <div class="game-chip">Overall Score: <span id="game-score">0</span></div>
+                        <div class="game-chip">Streak: <span id="game-streak">0</span></div>
+                        <div class="game-chip">Review Pile: <span id="game-review-count">0</span></div>
+                        <div class="game-chip">Pool Terms: <span id="game-pool-count">0</span></div>
+                        <div class="game-chip">Question <span id="game-current">1</span>/<span id="game-total">10</span></div>
+                    </div>
+
+                    <div class="game-progress-bar">
+                        <div id="game-progress-fill" class="game-progress-fill"></div>
+                    </div>
+
+                    <div class="game-question-card">
+                        <h3 id="game-prompt">Question prompt appears here</h3>
+                        <div id="game-options" class="game-options"></div>
+                    </div>
+
+                    <div id="game-feedback" class="game-feedback hidden"></div>
+
+                    <div class="game-action-row">
+                        <button id="game-next-btn" class="quiz-btn game-next-btn hidden" onclick="nextGameQuestion()">Continue</button>
+                    </div>
+                </div>
+
+                <div id="game-over" class="game-over hidden">
+                    <h3 id="game-result-title">Level Results</h3>
+                    <p id="game-result-message" class="game-result-message">Ready for the next challenge.</p>
+                    <p class="game-over-score"><span id="game-final-accuracy">0</span>% Accuracy</p>
+                    <p>Level Correct: <span id="game-final-correct">0</span> / <span id="game-final-total">0</span></p>
+                    <p>Overall Score: <span id="game-final-score">0</span></p>
+                    <p>Review Pile: <span id="game-final-review-count">0</span></p>
+                    <div class="game-result-actions">
+                        <button id="game-retry-level-btn" class="results-btn" onclick="retryCurrentLevel()">Retry Level</button>
+                        <button id="game-next-level-btn" class="results-btn results-btn-primary" onclick="startNextLevel()">Next Level</button>
+                        <button id="game-review-pile-btn" class="results-btn" onclick="reviewWrongPile()">Review Wrong Pile</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Categories View -->
+            <section id="categories-view" class="view">
+                <div class="view-header">
+                    <button class="back-btn" onclick="showView('home-view')">&larr; Back</button>
+                    <h2>Study by Category</h2>
+                </div>
+                <div id="categories-grid" class="categories-grid">
+                    <!-- Categories will be populated here -->
+                </div>
+            </section>
+
+            <!-- Stats View -->
+            <section id="stats-view" class="view">
+                <div class="view-header">
+                    <button class="back-btn" onclick="showView('home-view')">&larr; Back</button>
+                    <h2>Your Progress</h2>
+                </div>
+                <div class="stats-container">
+                    <div class="stat-card">
+                        <h3>Total Terms Learned</h3>
+                        <p class="stat-number" id="stat-learned">0</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Quizzes Completed</h3>
+                        <p class="stat-number" id="stat-quizzes">0</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Average Score</h3>
+                        <p class="stat-number" id="stat-average">0%</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Current Streak</h3>
+                        <p class="stat-number" id="stat-streak">0</p>
+                    </div>
+                </div>
+
+                <div class="category-stats">
+                    <h3>Category Breakdown</h3>
+                    <div id="category-breakdown"></div>
+                </div>
+            </section>
+
+            <!-- Learn Fast View -->
+            <section id="learn-fast-view" class="view">
+                <div class="view-header">
+                    <button class="back-btn" onclick="showView('home-view')">&larr; Back</button>
+                    <h2>Learn Fast Breakdown</h2>
+                </div>
+
+                <div class="learn-fast-section">
+                    <h3>High-Yield Strategy Cards</h3>
+                    <div id="learn-fast-cards" class="learn-fast-grid">
+                        <!-- Learn Fast strategy cards render here -->
+                    </div>
+                </div>
+
+                <div class="learn-fast-section">
+                    <h3>Quick Drill</h3>
+                    <div id="learn-fast-drill" class="learn-fast-drill-grid">
+                        <!-- Learn Fast drill cards render here -->
+                    </div>
+                </div>
+
+                <div class="learn-fast-section">
+                    <h3>Punctuation Watchouts</h3>
+                    <div id="learn-fast-punctuation" class="learn-fast-punctuation-grid">
+                        <!-- Learn Fast punctuation watchouts render here -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- Punctuation Watchouts View -->
+            <section id="punctuation-watchouts-view" class="view">
+                <div class="view-header">
+                    <button class="back-btn" onclick="showView('home-view')">&larr; Back</button>
+                    <h2>Punctuation Watchouts</h2>
+                </div>
+
+                <div id="punctuation-watchouts-content" class="learn-fast-punctuation-grid punctuation-watchouts-content">
+                    <!-- Punctuation watchouts render here -->
+                </div>
+            </section>
+
+            <!-- Add Terms Section -->
+            <section id="admin-view" class="view">
+                <div class="view-header">
+                    <button class="back-btn" onclick="showView('home-view')">&larr; Back</button>
+                    <h2>Manage Terms</h2>
+                </div>
+                <div class="admin-form">
+                    <textarea id="terms-textarea" placeholder="Paste your terms here in format:&#10;Category: Term&#10;Definition&#10;&#10;Category: Term&#10;Definition..." rows="15"></textarea>
+                    <button class="submit-btn" onclick="importTerms()">Import Terms</button>
+                </div>
+                <div id="import-status"></div>
+            </section>
+        </main>
+
+        <!-- Celebration Modal -->
+        <div id="celebration-modal" class="celebration-modal hidden">
+            <div class="celebration-content">
+                <div class="confetti" id="confetti"></div>
+                <h2 id="celebration-title">Amazing! 🎉</h2>
+                <p id="celebration-message">You completed the quiz!</p>
+                <p id="celebration-score"></p>
+                <button class="celebration-btn" onclick="closeCelebration()">Keep Learning 📚</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        (function loadFreshAssets() {
+            const version = Date.now().toString();
+
+            const css = document.createElement('link');
+            css.rel = 'stylesheet';
+            css.href = `style.css?v=${version}`;
+            document.head.appendChild(css);
+
+            const js = document.createElement('script');
+            js.src = `script.js?v=${version}`;
+            document.body.appendChild(js);
+        })();
+    </script>
+</body>
+</html>
