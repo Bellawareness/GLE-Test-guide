@@ -107,66 +107,199 @@ const learnFastDrillPrompts = [
 
 
 const learnFastPunctuationWatchouts = [
-    "Use apostrophes for contractions (don't) and possession (teacher's); decades usually drop apostrophes (1990s).",
-    "Possessive singular: add 's (court's decision).",
-    "Possessive plural: add apostrophe after s (jurors' chairs).",
-    "In American usage, periods and commas go inside quotation marks.",
-    "Two spaces after period at end of sentence.",
-    "After yes or no, add a comma when the sentence continues (Yes, I can. / No, sir.).",
-    "When yes or no is a direct answer with no additional info, no comma needed.",
-    "Set off direct address with commas (Maria, check this. / Thanks, coach.).",
-    "Wrap throwaway fillers with commas (Well, honestly, that answer works.).",
-    "Non-essential words like 'according', 'perhaps', 'indeed', 'apparently', 'obviously' need commas.",
-    "Filler words like 'you know', 'like', 'I mean', 'yeah' need surrounding commas.",
-    "Conjunctive adverbs (however, therefore, otherwise) need a comma.",
-    "Use a comma after introductory now (Now, let's fix the draft.).",
-    "Set off mid-sentence too or though with commas when parenthetical (It happened too, / Though tired, I stayed).",
-    "Use a semicolon between related independent clauses.",
-    "Use a semicolon before however, therefore, and similar transitions.",
-    "Use semicolons in compound lists (Atlanta, Georgia; Vail, Colorado).",
-    "Use a colon before a list or explanation after a complete clause.",
-    "Two spaces after a colon (per formatting rules).",
-    "Use em dashes for interruptions (space on both sides) and continue in lowercase unless proper noun follows.",
-    "Dashes used for stutters or complete interruptions (show the dash: site—side).",
-    "Use hyphens for compound nouns (check-in, cross-talk).",
-    "Use hyphens for compound adjectives (12-gauge shotgun, three-fourths inch).",
-    "Use hyphens for compound responses (Uh-huh, Huh-uh).",
-    "Keep the Oxford comma for clarity in three-item-plus lists (mustard, mayo, and ketchup).",
-    "Capitalize first word inside quotation marks (He asked, \"Will you?\" / She said, \"Yes.\").",
-    "Question marks inside quotation marks only if quoted text is a question (He asked, \"Is that correct?\").",
-    "Keep Q and A formatting aligned (Q: ... / A: ... consistently).",
-    "Keep colloquy dialogue labels and punctuation aligned line to line.",
-    "Keep number format consistent within the same sentence (all numerals or all words).",
-    "Spell out numbers 1–10 (one through ten, first through tenth).",
-    "Use numerals for 11–1 million and above.",
-    "Spell out percent (3 percent, not 3%).",
-    "Time in numerals (3:00, 9 a.m., 5:00–9:00 p.m.).",
-    "Measurements in numerals (9 miles, 30 yards, 1 yard).",
-    "Weapons and calibers: Colt .45.",
-    "Fractions hyphenated (three-fourths, 12-gauge).",
-    "Write dates numerically and keep style consistent.",
-    "Do not use apostrophe for decades (1990s, not 1990's); use apostrophe for shortened year ('23, '98).",
-    "Do not capitalize words following dashes.",
-    "Do not capitalize titles without the last name (the doctor, not the Doctor).",
-    "But capitalize with last name (Doctor Smith).",
-    "Capitalize proper nouns (Court, when referring to a specific court; State when personified).",
-    "Capitalize 'The Court' most of the time.",
-    "Do not swap 'on to' with 'onto'.",
-    "Distinguish 'sometime' (adverb: at some point) from 'some time' (noun phrase: a duration).",
-    "Going to (not gonna); Want to (not wanna); Ask (not aks); Yep (not yup); Specifically (not pacifically); Okay; All right (never alright).",
-    "\"And\" or \"But\" can start a sentence.",
-    "Do not leave a partial word (omit partial words, fix mispronunciations).",
-    "Leave mistaken or repeated words in the transcript (show the correction: site—side).",
-    "Ignore 'um,' 'hmm,' and similar involuntary utterances.",
-    "Put 'this' in quotation marks when referenced as a word.",
-    "Always add the byline when coming out of colloquy.",
-    "Ages are numerical (if at start of sentence, spell out: \"Thirty-two years old...\").",
-    "Nouns tied to numerals: capitalize (Count 3, but not page, line, paragraph).",
-    "If no dollar sign is mentioned by the speaker, do not add one.",
-    "\"$30-odd\" is correct (hyphenated).",
-    "Commas separate items in lists (Mustard, mayo, ketchup).",
-    "Comma before conjunction linking independent clauses in compound sentences (I bought a cat, and I left).",
-    "Comma after introductory phrase in complex sentences (Although it rained, we left)."
+    {
+        punctuation: "' (Apostrophes)",
+        rules: [
+            "Use for contractions (don't) and possession (teacher's)",
+            "Possessive singular: add 's (court's decision)",
+            "Possessive plural: add apostrophe after s (jurors' chairs)",
+            "Do NOT use apostrophe for decades (1990s, not 1990's)",
+            "DO use apostrophe for shortened years ('23, '98)"
+        ],
+        example: "contractions: don't, can't | possession: teacher's book, jurors' decision"
+    },
+    {
+        punctuation: ". (Periods)",
+        rules: [
+            "In American usage, periods go INSIDE quotation marks",
+            "Two spaces after period at end of sentence (per court reporting rules)"
+        ],
+        example: "She said, \"I agree.\" (period inside quotes) | End of line.  Next line. (two spaces)"
+    },
+    {
+        punctuation: ", (Commas) - Yes/No Answers",
+        rules: [
+            "After yes or no, add comma when sentence continues: Yes, I can. / No, sir.",
+            "When yes/no is direct answer only, no comma needed"
+        ],
+        example: "Yes, that's correct. | No, I don't. | Answer: Yes. (no comma)"
+    },
+    {
+        punctuation: ", (Commas) - Direct Address",
+        rules: [
+            "Set off direct address with commas",
+            "Name/title of person being addressed gets commas around it"
+        ],
+        example: "Maria, check this. | Thanks, coach. | Listen, everyone, we need to proceed."
+    },
+    {
+        punctuation: ", (Commas) - Filler Words",
+        rules: [
+            "Wrap throwaway fillers with commas",
+            "Non-essential words (according, perhaps, indeed, apparently, obviously) need commas",
+            "Filler phrases (you know, like, I mean, yeah) need surrounding commas"
+        ],
+        example: "Well, honestly, that answer works. | According to him, we should proceed. | I think, you know, it's correct."
+    },
+    {
+        punctuation: ", (Commas) - Transitions & Adverbs",
+        rules: [
+            "Conjunctive adverbs (however, therefore, otherwise) need a comma",
+            "Use comma after introductory 'now': Now, let's fix the draft.",
+            "Set off mid-sentence 'too' or 'though' with commas when parenthetical"
+        ],
+        example: "However, we should wait. | Now, let's continue. | It happened too, and then we left."
+    },
+    {
+        punctuation: ", (Commas) - Lists & Compounds",
+        rules: [
+            "Commas separate items in lists: Mustard, mayo, ketchup",
+            "Keep the Oxford comma for clarity in three-plus item lists: mustard, mayo, and ketchup",
+            "Comma before conjunction in compound sentences: I bought a cat, and I left.",
+            "Comma after introductory phrase in complex sentences: Although it rained, we left."
+        ],
+        example: "Red, white, and blue. | She worked, but he didn't. | After we finished, we left."
+    },
+    {
+        punctuation: "; (Semicolons)",
+        rules: [
+            "Use between related independent clauses",
+            "Use before however, therefore, and similar transitions",
+            "Use in compound lists (city, state; city, state)"
+        ],
+        example: "The case closed; however, they appealed. | Atlanta, Georgia; Vail, Colorado."
+    },
+    {
+        punctuation: ": (Colons)",
+        rules: [
+            "Use before a list or explanation after a complete clause",
+            "Two spaces after a colon (per court reporting rules)"
+        ],
+        example: "The requirements are as follows:  (two spaces) list items. | She stated:  The answer is yes."
+    },
+    {
+        punctuation: "— (Em Dashes)",
+        rules: [
+            "Use for interruptions (space on both sides)",
+            "Continue in lowercase unless proper noun follows",
+            "Show stutters or complete interruptions: site—side"
+        ],
+        example: "He said — and I quote — the answer is yes. | site—side (showing correction)"
+    },
+    {
+        punctuation: "- (Hyphens)",
+        rules: [
+            "Use for compound nouns: check-in, cross-talk",
+            "Use for compound adjectives: 12-gauge shotgun, three-fourths inch",
+            "Use for compound responses: Uh-huh, Huh-uh",
+            "Use in fractions: three-fourths"
+        ],
+        example: "At check-in, they got the 12-gauge shotgun. | Uh-huh. Huh-uh."
+    },
+    {
+        punctuation: "\" \" (Quotation Marks)",
+        rules: [
+            "Capitalize first word inside quotation marks",
+            "Question marks inside quotation marks only if quoted text is a question",
+            "Periods/commas go INSIDE quotation marks (American style)",
+            "Put 'this' in quotation marks when referenced as a word"
+        ],
+        example: "He asked, \"Will you?\" (question) | She said, \"Yes.\" (statement) | The word \"this\" means..."
+    },
+    {
+        punctuation: "? (Question Marks)",
+        rules: [
+            "Question mark inside quotation mark only if quoted text is a question",
+            "If asking about quotation, question mark goes outside"
+        ],
+        example: "He asked, \"Is that correct?\" | Did she say, \"I agree\"?"
+    },
+    {
+        punctuation: "0-10 (Numbers One through Ten)",
+        rules: [
+            "Spell out numbers 1–10 (one through ten, first through tenth)",
+            "Use numerals for 11 and above, up to 1 million+"
+        ],
+        example: "one, two, three, ten | 11, 20, 100, 1,000,000"
+    },
+    {
+        punctuation: "$ & % (Special Numerals)",
+        rules: [
+            "Spell out percent (3 percent, NOT 3%)",
+            "If no dollar sign mentioned by speaker, do not add one",
+            "\"$30-odd\" is correct (hyphenated)"
+        ],
+        example: "3 percent (not 3%) | $30-odd dollars"
+    },
+    {
+        punctuation: "Time & Measurements",
+        rules: [
+            "Time in numerals: 3:00, 9 a.m., 5:00–9:00 p.m.",
+            "Measurements in numerals: 9 miles, 30 yards, 1 yard",
+            "Weapons/calibers: Colt .45"
+        ],
+        example: "at 3:00 p.m. | 9 miles away | a Colt .45"
+    },
+    {
+        punctuation: "Dates & Consistency",
+        rules: [
+            "Write dates numerically and keep style consistent",
+            "Keep number format consistent within same sentence (all numerals OR all words)"
+        ],
+        example: "03/26/2026 (consistent format) | Three dogs, two cats (consistent: words)"
+    },
+    {
+        punctuation: "Capitalization Rules",
+        rules: [
+            "Do NOT capitalize words following dashes",
+            "Do NOT capitalize titles without last name (the doctor, not the Doctor)",
+            "DO capitalize titles with last name (Doctor Smith)",
+            "Capitalize proper nouns (Court for specific court; State when personified)",
+            "Capitalize 'The Court' most of the time"
+        ],
+        example: "The doctor said — and he is right. (lowercase after dash) | the doctor vs. Doctor Smith | The Court ruled."
+    },
+    {
+        punctuation: "Common Word Confusions",
+        rules: [
+            "Do NOT swap 'on to' with 'onto'",
+            "Distinguish 'sometime' (at some point) from 'some time' (a duration)",
+            "Going to (not gonna) | Want to (not wanna) | Ask (not aks)",
+            "Yep (not yup) | Specifically (not pacifically) | Okay | All right (never alright)"
+        ],
+        example: "Move on to the next. | Meet me sometime. | Some time has passed."
+    },
+    {
+        punctuation: "Sentence Starters & Editing",
+        rules: [
+            "\"And\" or \"But\" CAN start a sentence",
+            "Do NOT leave partial words (omit partial words, fix mispronunciations)",
+            "DO leave mistaken or repeated words (show correction with dash: site—side)",
+            "Ignore involuntary utterances: 'um,' 'hmm,' etc."
+        ],
+        example: "And then we left. But that's not all. | site—side (show the correction)"
+    },
+    {
+        punctuation: "Transcript Formatting Specifics",
+        rules: [
+            "Keep Q and A formatting aligned (Q: ... / A: ... consistently)",
+            "Keep colloquy dialogue labels and punctuation aligned line to line",
+            "Always add the byline when coming out of colloquy",
+            "Ages are numerical (if at start of sentence, spell out: \"Thirty-two years old...\")",
+            "Nouns tied to numerals: capitalize (Count 3, but NOT page, line, paragraph)"
+        ],
+        example: "Q: Did you see it?  A: Yes. | THE COURT: Order in the court. [byline] | Thirty-two years old."
+    }
 ];
 
 
@@ -2810,14 +2943,21 @@ function renderPunctuationWatchouts(containerId) {
         return;
     }
 
-    container.innerHTML = `
-        <article class="learn-fast-card learn-fast-watchouts-card">
-            <h4 class="learn-fast-card-title">Checklist</h4>
-            <ul class="learn-fast-list learn-fast-watchouts-list">
-                ${learnFastPunctuationWatchouts.map(item => `<li>${item}</li>`).join('')}
-            </ul>
+    container.innerHTML = learnFastPunctuationWatchouts.map(punctItem => `
+        <article class="learn-fast-card punctuation-card">
+            <h4 class="learn-fast-card-title punctuation-title">${punctItem.punctuation}</h4>
+            <div class="punctuation-rules">
+                <h5 class="punctuation-subtitle">Rules:</h5>
+                <ul class="learn-fast-list">
+                    ${punctItem.rules.map(rule => `<li>${rule}</li>`).join('')}
+                </ul>
+            </div>
+            <div class="punctuation-example">
+                <h5 class="punctuation-subtitle">Example:</h5>
+                <p><code>${punctItem.example}</code></p>
+            </div>
         </article>
-    `;
+    `).join('');
 }
 
 function renderLearnFastView() {
