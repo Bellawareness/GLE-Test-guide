@@ -2464,126 +2464,6 @@ const builtInTerms = [
         "definition": "Relating to the xiphoid process, the small inferior part of the sternum."
     },
     {
-        "category": "Punctuation Guidelines",
-        "term": "Apostrophes",
-        "definition": "Use apostrophes for possession and contractions, not for simple plurals."
-    },
-    {
-        "category": "Punctuation Guidelines",
-        "term": "Periods",
-        "definition": "Use periods to end complete declarative statements and standard abbreviations as required by style."
-    },
-    {
-        "category": "Punctuation Guidelines",
-        "term": "Capitalization",
-        "definition": "Capitalize proper nouns, sentence starts, and formally required titles consistently."
-    },
-    {
-        "category": "Punctuation Guidelines",
-        "term": "Numbers",
-        "definition": "Apply one consistent rule for writing numbers as words or numerals based on context."
-    },
-    {
-        "category": "Punctuation Guidelines",
-        "term": "Yes/No Comma Rule",
-        "definition": "Use a comma after introductory yes or no when it functions as a discourse starter."
-    },
-    {
-        "category": "Punctuation Guidelines",
-        "term": "Direct Address Comma",
-        "definition": "Set off names or titles in direct address with commas."
-    },
-    {
-        "category": "Punctuation Guidelines",
-        "term": "Throwaway Words (Comma Use)",
-        "definition": "Use commas around nonessential throwaway words that do not change core meaning."
-    },
-    {
-        "category": "Punctuation Guidelines",
-        "term": "Oxford Comma",
-        "definition": "Use the serial comma before the final conjunction in a list for clarity."
-    },
-    {
-        "category": "Punctuation Guidelines",
-        "term": "Semicolons",
-        "definition": "Use semicolons to join closely related independent clauses or separate complex list items."
-    },
-    {
-        "category": "Punctuation Guidelines",
-        "term": "Colons",
-        "definition": "Use a colon to introduce an explanation, list, or quotation after a complete clause."
-    },
-    {
-        "category": "Punctuation Guidelines",
-        "term": "Dashes",
-        "definition": "Use em dashes sparingly to mark interruption, emphasis, or abrupt shifts in thought."
-    },
-    {
-        "category": "Punctuation Guidelines",
-        "term": "Quotation Marks",
-        "definition": "Use quotation marks for exact spoken words and place punctuation per transcript style rules."
-    },
-    {
-        "category": "Punctuation Guidelines",
-        "term": "Hyphens",
-        "definition": "Use hyphens in compound modifiers when needed to prevent ambiguity."
-    },
-    {
-        "category": "Punctuation Guidelines",
-        "term": "Conjunctive Adverbs",
-        "definition": "Use a semicolon before and a comma after conjunctive adverbs linking independent clauses."
-    },
-    {
-        "category": "Punctuation Guidelines",
-        "term": "Comma with Too/Though",
-        "definition": "Use commas with too or though when they are parenthetical or sentence-final interrupters."
-    },
-    {
-        "category": "Punctuation Guidelines",
-        "term": "Now Comma Rule",
-        "definition": "Use a comma after now when it is an introductory transition, not when integral to the clause."
-    },
-    {
-        "category": "Punctuation Guidelines",
-        "term": "Sentence Structure Rules",
-        "definition": "Prefer complete, clear sentences and avoid fragments unless quoting exact speech."
-    },
-    {
-        "category": "Punctuation Guidelines",
-        "term": "Number Format Consistency",
-        "definition": "Keep number formats consistent within the same transcript, table, or exhibit reference."
-    },
-    {
-        "category": "Punctuation Guidelines",
-        "term": "Dates (Numeric Format)",
-        "definition": "Record dates in a single approved numeric format consistently across the record."
-    },
-    {
-        "category": "Punctuation Guidelines",
-        "term": "On to vs Onto",
-        "definition": "Use on to for movement to a position and onto for movement to a surface."
-    },
-    {
-        "category": "Punctuation Guidelines",
-        "term": "Sometime vs Some Time",
-        "definition": "Use sometime for an unspecified time and some time for a duration."
-    },
-    {
-        "category": "Punctuation Guidelines",
-        "term": "Mistaken or Repeated Words",
-        "definition": "Preserve mistaken or repeated words faithfully unless style rules require a notation."
-    },
-    {
-        "category": "Punctuation Guidelines",
-        "term": "Q&A Formatting",
-        "definition": "Format questions and answers with consistent speaker labels, spacing, and punctuation."
-    },
-    {
-        "category": "Punctuation Guidelines",
-        "term": "Colloquy Formatting",
-        "definition": "Format colloquy with clear speaker identification and consistent interruption markers."
-    },
-    {
         "category": "Legal Certification",
         "term": "Courtroom Rules",
         "definition": "Courtroom rules govern decorum, speaking order, and procedural conduct on the record."
@@ -3586,15 +3466,20 @@ function populateGameCategorySelect() {
     const select = document.getElementById('gameCategoryDropdown');
     if (!select) return;
 
+    // Exclude punctuation guidelines from game (too easy)
+    const excludedCategories = ['punctuation guidelines', 'punctuation'];
+
     const currentValue = select.value;
     select.innerHTML = '<option value="">All Categories</option>';
 
-    studyData.categories.forEach(category => {
-        const option = document.createElement('option');
-        option.value = category.name;
-        option.textContent = category.name;
-        select.appendChild(option);
-    });
+    studyData.categories
+        .filter(category => !excludedCategories.includes(category.name.toLowerCase()))
+        .forEach(category => {
+            const option = document.createElement('option');
+            option.value = category.name;
+            option.textContent = category.name;
+            select.appendChild(option);
+        });
 
     if (currentValue && Array.from(select.options).some(option => option.value === currentValue)) {
         select.value = currentValue;
@@ -3605,9 +3490,15 @@ function getGamePool(categoryName) {
     const normalizedCategory = (categoryName || '').trim().toLowerCase();
     const includeAllCategories = !normalizedCategory || normalizedCategory === 'all';
 
+    // Exclude punctuation guidelines from game (too easy)
+    const excludedCategories = ['punctuation guidelines', 'punctuation'];
+
     const sourceCategories = includeAllCategories
-        ? studyData.categories
-        : studyData.categories.filter(category => category.name.toLowerCase() === normalizedCategory);
+        ? studyData.categories.filter(category =>
+            !excludedCategories.includes(category.name.toLowerCase()))
+        : studyData.categories.filter(category =>
+            category.name.toLowerCase() === normalizedCategory &&
+            !excludedCategories.includes(category.name.toLowerCase()));
 
     const dedupedByCategoryAndTerm = new Map();
 
