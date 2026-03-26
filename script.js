@@ -3427,7 +3427,9 @@ function toggleKnown() {
 
 function startQuiz() {
     const categoryName = document.getElementById('quizCategoryDropdown').value;
-    const numQuestions = parseInt(document.getElementById('quizQuestions').value);
+
+    // Force 10 questions for 10-to-pass requirement
+    const numQuestions = 10;
 
     let quizCards = loadCategory(categoryName, 'quiz');
 
@@ -3436,26 +3438,90 @@ function startQuiz() {
         return;
     }
 
-    const repeatCap = 2;
-    const underCap = quizCards.filter(card => getTermRepeatCount(card.term) < repeatCap);
-    const pool = underCap.length >= Math.min(numQuestions, quizCards.length) ? underCap : quizCards;
+    if (quizCards.length < 4) {
+        alert('Need at least 4 terms for quiz mode.');
+        return;
+    }
 
-    // Shuffle and limit
+    // Filter out already asked questions in this session
+    if (!window.quizAskedKeys) {
+        window.quizAskedKeys = new Set();
+    }
+
+    const availableCards = quizCards.filter(card => !window.quizAskedKeys.has(normalizeTerm(card.term)));
+
+    if (availableCards.length < numQuestions) {
+        // Reset asked questions if not enough available
+        window.quizAskedKeys.clear();
+    }
+
+    const pool = availableCards.length >= numQuestions ? availableCards : quizCards;
+
+    // Shuffle and limit to 10
     quizCards = pool.sort(() => Math.random() - 0.5).slice(0, numQuestions);
+
+    // Mark these as asked
+    quizCards.forEach(card => window.quizAskedKeys.add(normalizeTerm(card.term)));
 
     quizState = {
         active: true,
         questions: quizCards,
         currentQuestion: 0,
         answers: [],
-        scores: []
+        scores: [],
+        correctAnswers: [],  // Track which question indices were correct
+        autoAdvanceTimer: null
     };
 
     document.getElementById('quiz-setup').classList.add('hidden');
     document.getElementById('quiz-content').classList.remove('hidden');
+    document.getElementById('quiz-results').classList.add('hidden');
     document.getElementById('quiz-total').textContent = quizCards.length;
 
+    // Reset feedback
+    const feedbackEl = document.getElementById('quiz-feedback');
+    if (feedbackEl) {
+        feedbackEl.className = 'game-feedback hidden';
+        feedbackEl.textContent = '';
+    }
+
+    renderQuizProgressDots();
     displayQuestion();
+}
+
+function renderQuizProgressDots() {
+    const dotsContainer = document.getElementById('quiz-progress-dots');
+    const correctCountEl = document.getElementById('quiz-correct-count');
+
+    if (!dotsContainer) return;
+
+    const totalRequired = 10;
+    const currentQuestion = quizState.currentQuestion;
+    const correctAnswers = quizState.correctAnswers || [];
+
+    let dotsHtml = '';
+    for (let i = 0; i < totalRequired; i++) {
+        let dotClass = 'progress-dot';
+        let content = i + 1;
+
+        if (correctAnswers.includes(i)) {
+            dotClass += ' correct';
+            content = '✓';
+        } else if (i < currentQuestion && !correctAnswers.includes(i)) {
+            dotClass += ' incorrect';
+            content = '✗';
+        } else if (i === currentQuestion) {
+            dotClass += ' current';
+        }
+
+        dotsHtml += `<div class="${dotClass}">${content}</div>`;
+    }
+
+    dotsContainer.innerHTML = dotsHtml;
+
+    if (correctCountEl) {
+        correctCountEl.textContent = correctAnswers.length;
+    }
 }
 
 function displayQuestion() {
@@ -3473,12 +3539,14 @@ function displayQuestion() {
     document.getElementById('quiz-current').textContent = questionNum;
     document.getElementById('quiz-question-text').textContent = `What does "${question.term}" mean?`;
 
-    // Generate answer options
+    // Generate answer options from the full pool for better distractors
+    const allCards = loadCategory(document.getElementById('quizCategoryDropdown').value, 'quiz');
     const options = [question];
-    const otherQuestions = quizState.questions.filter((_, i) => i !== quizState.currentQuestion);
+    const otherCards = allCards.filter(card => normalizeTerm(card.term) !== normalizeTerm(question.term));
+    const shuffledOthers = otherCards.sort(() => Math.random() - 0.5);
 
-    for (let i = 0; i < 3 && i < otherQuestions.length; i++) {
-        options.push(otherQuestions[Math.floor(Math.random() * otherQuestions.length)]);
+    for (let i = 0; i < 3 && i < shuffledOthers.length; i++) {
+        options.push(shuffledOthers[i]);
     }
 
     options.sort(() => Math.random() - 0.5);
@@ -3495,12 +3563,24 @@ function displayQuestion() {
         optionsContainer.appendChild(optionDiv);
     });
 
-    // Update progress
+    // Update progress bar
     const progress = (questionNum / quizState.questions.length) * 100;
     document.getElementById('quiz-progress-fill').style.width = progress + '%';
 
     // Store options for later
     quizState.currentOptions = options;
+
+    // Reset feedback
+    const feedbackEl = document.getElementById('quiz-feedback');
+    if (feedbackEl) {
+        feedbackEl.className = 'game-feedback hidden';
+        feedbackEl.textContent = '';
+    }
+
+    // Show submit button
+    document.getElementById('submit-answer-btn').classList.remove('hidden');
+
+    renderQuizProgressDots();
 }
 
 let selectedOptionIndex = null;
@@ -3535,61 +3615,100 @@ function submitAnswer() {
 
     quizState.scores.push(isCorrect ? 1 : 0);
 
+    if (isCorrect) {
+        quizState.correctAnswers.push(quizState.currentQuestion);
+    }
+
     // Show feedback
+    const feedbackEl = document.getElementById('quiz-feedback');
+    const correctIndex = quizState.currentOptions.findIndex(o => o.term === currentQuestion.term);
+    const correctText = currentQuestion.definition;
+
+    if (feedbackEl) {
+        if (isCorrect) {
+            feedbackEl.className = 'game-feedback game-feedback-correct';
+            feedbackEl.textContent = 'Correct! Great job.';
+        } else {
+            feedbackEl.className = 'game-feedback game-feedback-incorrect';
+            feedbackEl.textContent = `Incorrect. Correct answer: ${correctText}`;
+        }
+    }
+
+    // Highlight options
     document.querySelectorAll('.quiz-option').forEach((opt, index) => {
         opt.style.pointerEvents = 'none';
-        if (index === selectedOptionIndex) {
-            opt.classList.add(isCorrect ? 'correct' : 'incorrect');
-        }
-        if (index === quizState.currentOptions.findIndex(o => o.term === currentQuestion.term)) {
+        opt.classList.add('locked', 'disabled-state');
+
+        if (index === correctIndex) {
             opt.classList.add('correct');
+        }
+        if (index === selectedOptionIndex && !isCorrect) {
+            opt.classList.add('incorrect');
         }
     });
 
-    // Wait before going to next question
-    setTimeout(() => {
+    // Hide submit button during auto-advance
+    document.getElementById('submit-answer-btn').classList.add('hidden');
+
+    // Update progress dots immediately
+    renderQuizProgressDots();
+
+    // Auto-advance after delay
+    quizState.autoAdvanceTimer = setTimeout(() => {
         quizState.currentQuestion++;
         selectedOptionIndex = null;
         displayQuestion();
-    }, 1500);
+    }, 1200);
 }
 
 function finishQuiz() {
     document.getElementById('quiz-content').classList.add('hidden');
 
     const totalCorrect = quizState.scores.reduce((a, b) => a + b, 0);
-    const percentage = Math.round((totalCorrect / quizState.scores.length) * 100);
+    const totalQuestions = quizState.scores.length;
+    const percentage = Math.round((totalCorrect / totalQuestions) * 100);
+    const passed = totalCorrect === totalQuestions;  // Must get 10/10 to pass
 
-    // Update stats
-    userStats.quizzes++;
-    userStats.avgScore = Math.round(
-        (userStats.avgScore * (userStats.quizzes - 1) + percentage) / userStats.quizzes
-    );
-    if (percentage >= 80) userStats.streak++;
-    else userStats.streak = 0;
+    // Update stats only if passed
+    if (passed) {
+        userStats.quizzes++;
+        userStats.avgScore = Math.round(
+            (userStats.avgScore * (userStats.quizzes - 1) + percentage) / userStats.quizzes
+        );
+        userStats.streak++;
+    } else {
+        userStats.streak = 0;
+    }
 
     saveToLocalStorage();
 
     // Display results
-    displayQuizResults(totalCorrect, quizState.scores.length, percentage);
+    displayQuizResults(totalCorrect, totalQuestions, percentage, passed);
 
-    // Show celebration if score is good
-    if (percentage >= 70) {
+    // Show celebration if passed
+    if (passed) {
         setTimeout(() => {
             showCelebration(
-                `Amazing Score! ${percentage}%! 🎉`,
-                `You got ${totalCorrect} out of ${quizState.scores.length} correct!`
+                `Perfect Score! 🎉`,
+                `You got all ${totalQuestions} correct! Quiz passed!`
             );
         }, 500);
     }
 }
 
-function displayQuizResults(correct, total, percentage) {
+function displayQuizResults(correct, total, percentage, passed) {
     const resultsDiv = document.getElementById('quiz-results');
+
+    const titleText = passed ? 'Quiz Passed! 🎉' : 'Quiz Failed';
+    const messageText = passed
+        ? 'Perfect score! You\'ve mastered this material.'
+        : `You need ${total}/${total} correct to pass. Keep practicing!`;
+
     let resultHTML = `
-        <h2 class="results-title">Quiz Complete!</h2>
-        <p class="results-score">${percentage}%</p>
+        <h2 class="results-title">${titleText}</h2>
+        <p class="results-score" style="color: ${passed ? '#4caf50' : '#f44336'}">${percentage}%</p>
         <p class="results-subtitle">${correct} out of ${total} correct</p>
+        <p style="margin-bottom: 20px; font-weight: 600; color: ${passed ? '#4caf50' : '#f44336'}">${messageText}</p>
         <div class="results-breakdown">
     `;
 
@@ -3606,13 +3725,26 @@ function displayQuizResults(correct, total, percentage) {
     resultHTML += `
         </div>
         <div class="results-actions">
-            <button class="results-btn results-btn-primary" onclick="retakeQuiz()">Retake Quiz</button>
-            <button class="results-btn results-btn-secondary" onclick="showView('home-view')">Back to Home</button>
+            <button class="results-btn ${passed ? 'results-btn-secondary' : 'results-btn-primary'}" onclick="retryQuiz()">
+                ${passed ? 'Play Again' : 'Retry Quiz'}
+            </button>
+            ${passed ? '<button class="results-btn results-btn-primary" onclick="showView(\'home-view\')">Back to Home</button>' : ''}
         </div>
     `;
 
     resultsDiv.innerHTML = resultHTML;
     resultsDiv.classList.remove('hidden');
+}
+
+function retryQuiz() {
+    // Clear the asked questions for retry
+    if (quizState.questions) {
+        quizState.questions.forEach(card => {
+            window.quizAskedKeys.delete(normalizeTerm(card.term));
+        });
+    }
+    document.getElementById('quiz-results').classList.add('hidden');
+    document.getElementById('quiz-setup').classList.remove('hidden');
 }
 
 function retakeQuiz() {

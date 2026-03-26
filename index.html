@@ -177,10 +177,21 @@
                         </div>
                     </div>
 
+                    <!-- Quiz Progress Tracker - Shows 10 dots for pass requirement -->
+                    <div class="level-progress-tracker">
+                        <div class="level-progress-label">Get 10 correct to pass:</div>
+                        <div id="quiz-progress-dots" class="level-progress-dots">
+                            <!-- 10 dots rendered by JS -->
+                        </div>
+                        <div class="level-progress-count"><span id="quiz-correct-count">0</span>/10 correct</div>
+                    </div>
+
                     <div class="quiz-question">
                         <h3 id="quiz-question-text">Question text</h3>
                         <div class="quiz-options" id="quiz-options"></div>
                     </div>
+
+                    <div id="quiz-feedback" class="game-feedback hidden"></div>
 
                     <div class="quiz-actions">
                         <button class="quiz-btn" id="submit-answer-btn" onclick="submitAnswer()">Submit Answer</button>
