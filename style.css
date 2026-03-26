@@ -230,6 +230,78 @@ body {
     background: linear-gradient(135deg, rgba(43, 118, 141, 0.08), rgba(43, 118, 141, 0.02));
 }
 
+/* Featured Button - Game Mode */
+.featured-btn {
+    grid-column: span 2;
+    background: linear-gradient(135deg, #ff7f6a 0%, #f9b26b 100%) !important;
+    box-shadow: 0 12px 30px rgba(255, 127, 106, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    border: 2px solid #ff6b4a !important;
+    position: relative;
+    overflow: hidden;
+}
+
+.featured-btn::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    animation: shimmer 3s infinite;
+}
+
+.featured-btn .btn-text {
+    color: white;
+    font-size: 1.3em;
+    font-weight: 700;
+    position: relative;
+    z-index: 1;
+}
+
+.featured-btn .btn-desc {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 0.9em;
+    font-weight: 500;
+    position: relative;
+    z-index: 1;
+}
+
+.featured-btn .btn-icon {
+    font-size: 3.2em;
+    position: relative;
+    z-index: 1;
+    animation: gameIconBounce 2s ease-in-out infinite;
+}
+
+.featured-btn:hover {
+    background: linear-gradient(135deg, #ff6b4a 0%, #f9a842 100%) !important;
+    transform: translateY(-8px);
+    box-shadow: 0 18px 40px rgba(255, 127, 106, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+.featured-btn:active {
+    transform: translateY(-2px);
+}
+
+@keyframes shimmer {
+    0% {
+        transform: translateX(-100%);
+    }
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+@keyframes gameIconBounce {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-8px);
+    }
+}
+
 .btn-icon {
     font-size: 2.5em;
 }

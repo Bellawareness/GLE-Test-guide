@@ -108,23 +108,810 @@ const learnFastDrillPrompts = [
 
 const learnFastPunctuationWatchouts = [
     "Use apostrophes for contractions (don't) and possession (teacher's); decades usually drop apostrophes (1990s).",
+    "Possessive singular: add 's (court's decision).",
+    "Possessive plural: add apostrophe after s (jurors' chairs).",
     "In American usage, periods and commas go inside quotation marks.",
-    "After yes or no, add a comma when the sentence continues (Yes, I can.).",
+    "Two spaces after period at end of sentence.",
+    "After yes or no, add a comma when the sentence continues (Yes, I can. / No, sir.).",
+    "When yes or no is a direct answer with no additional info, no comma needed.",
     "Set off direct address with commas (Maria, check this. / Thanks, coach.).",
     "Wrap throwaway fillers with commas (Well, honestly, that answer works.).",
+    "Non-essential words like 'according', 'perhaps', 'indeed', 'apparently', 'obviously' need commas.",
+    "Filler words like 'you know', 'like', 'I mean', 'yeah' need surrounding commas.",
+    "Conjunctive adverbs (however, therefore, otherwise) need a comma.",
     "Use a comma after introductory now (Now, let's fix the draft.).",
-    "Set off mid-sentence too or though with commas when parenthetical.",
+    "Set off mid-sentence too or though with commas when parenthetical (It happened too, / Though tired, I stayed).",
     "Use a semicolon between related independent clauses.",
     "Use a semicolon before however, therefore, and similar transitions.",
+    "Use semicolons in compound lists (Atlanta, Georgia; Vail, Colorado).",
     "Use a colon before a list or explanation after a complete clause.",
-    "Use em dashes for interruptions and continue in lowercase unless a proper noun follows.",
-    "Use hyphens for compound forms like check-in, 12-gauge, and three-fourths.",
-    "Keep the Oxford comma for clarity in three-item-plus lists.",
+    "Two spaces after a colon (per formatting rules).",
+    "Use em dashes for interruptions (space on both sides) and continue in lowercase unless proper noun follows.",
+    "Dashes used for stutters or complete interruptions (show the dash: site—side).",
+    "Use hyphens for compound nouns (check-in, cross-talk).",
+    "Use hyphens for compound adjectives (12-gauge shotgun, three-fourths inch).",
+    "Use hyphens for compound responses (Uh-huh, Huh-uh).",
+    "Keep the Oxford comma for clarity in three-item-plus lists (mustard, mayo, and ketchup).",
+    "Capitalize first word inside quotation marks (He asked, \"Will you?\" / She said, \"Yes.\").",
+    "Question marks inside quotation marks only if quoted text is a question (He asked, \"Is that correct?\").",
     "Keep Q and A formatting aligned (Q: ... / A: ... consistently).",
     "Keep colloquy dialogue labels and punctuation aligned line to line.",
     "Keep number format consistent within the same sentence (all numerals or all words).",
-    "Write dates numerically in the chosen style and keep that style consistent.",
-    "Do not swap on to with onto, and distinguish sometime (adverb) from some time (noun phrase)."
+    "Spell out numbers 1–10 (one through ten, first through tenth).",
+    "Use numerals for 11–1 million and above.",
+    "Spell out percent (3 percent, not 3%).",
+    "Time in numerals (3:00, 9 a.m., 5:00–9:00 p.m.).",
+    "Measurements in numerals (9 miles, 30 yards, 1 yard).",
+    "Weapons and calibers: Colt .45.",
+    "Fractions hyphenated (three-fourths, 12-gauge).",
+    "Write dates numerically and keep style consistent.",
+    "Do not use apostrophe for decades (1990s, not 1990's); use apostrophe for shortened year ('23, '98).",
+    "Do not capitalize words following dashes.",
+    "Do not capitalize titles without the last name (the doctor, not the Doctor).",
+    "But capitalize with last name (Doctor Smith).",
+    "Capitalize proper nouns (Court, when referring to a specific court; State when personified).",
+    "Capitalize 'The Court' most of the time.",
+    "Do not swap 'on to' with 'onto'.",
+    "Distinguish 'sometime' (adverb: at some point) from 'some time' (noun phrase: a duration).",
+    "Going to (not gonna); Want to (not wanna); Ask (not aks); Yep (not yup); Specifically (not pacifically); Okay; All right (never alright).",
+    "\"And\" or \"But\" can start a sentence.",
+    "Do not leave a partial word (omit partial words, fix mispronunciations).",
+    "Leave mistaken or repeated words in the transcript (show the correction: site—side).",
+    "Ignore 'um,' 'hmm,' and similar involuntary utterances.",
+    "Put 'this' in quotation marks when referenced as a word.",
+    "Always add the byline when coming out of colloquy.",
+    "Ages are numerical (if at start of sentence, spell out: \"Thirty-two years old...\").",
+    "Nouns tied to numerals: capitalize (Count 3, but not page, line, paragraph).",
+    "If no dollar sign is mentioned by the speaker, do not add one.",
+    "\"$30-odd\" is correct (hyphenated).",
+    "Commas separate items in lists (Mustard, mayo, ketchup).",
+    "Comma before conjunction linking independent clauses in compound sentences (I bought a cat, and I left).",
+    "Comma after introductory phrase in complex sentences (Although it rained, we left)."
+];
+
+
+// ===================== COURT REPORTING STUDY MODULES =====================
+
+// Legal distinctions commonly confused in court reporting
+const learnFastLegalConfusionSets = [
+    {
+        group: 'Objection / Exception',
+        points: [
+            'Objection = a challenge raised to a question or evidence during testimony.',
+            'Exception = a formal objection to the court\'s ruling, preserved for appellate review.',
+            'Both preserve the record but exceptions go further by challenging the judge\'s decision.'
+        ],
+        memoryCue: 'Objection is to the question; Exception is to the court\'s ruling on it.'
+    },
+    {
+        group: 'Direct Examination / Cross-Examination',
+        points: [
+            'Direct Examination = initial questioning of a witness by the party who called them.',
+            'Cross-Examination = questioning of a witness by the opposing party.',
+            'Redirect follows cross; Recross follows redirect.'
+        ],
+        memoryCue: 'Direct = friendly; Cross = challenging.'
+    },
+    {
+        group: 'Direct Evidence / Circumstantial Evidence',
+        points: [
+            'Direct Evidence = based on firsthand observation (e.g., eyewitness testimony).',
+            'Circumstantial Evidence = implies a fact through inference.',
+            'Both are admissible; circumstantial is not weaker.'
+        ],
+        memoryCue: 'Direct = I saw it; Circumstantial = I infer it.'
+    },
+    {
+        group: 'Burden of Proof / Weight of Evidence',
+        points: [
+            'Burden of Proof = the obligation to prove allegations; varies by case type.',
+            'Weight of Evidence = the comparative value of evidence presented by each side.',
+            'Criminal: Beyond a Reasonable Doubt; Civil: Preponderance of the Evidence.'
+        ],
+        memoryCue: 'Burden = who must prove; Weight = how much is proven.'
+    },
+    {
+        group: 'Affirmation / Oath',
+        points: [
+            'Affirmation = a sworn promise to testify truthfully without using religious language.',
+            'Oath = traditional sworn promise with religious language.',
+            'Both have the same legal effect.'
+        ],
+        memoryCue: 'Affirmation is secular; Oath is traditional.'
+    },
+    {
+        group: 'Directed Verdict / Mistrial',
+        points: [
+            'Directed Verdict = judge rules insufficient evidence for jury (case ends).',
+            'Mistrial = trial terminated without verdict due to error or deadlock.',
+            'Directed verdict is a judgment; mistrial requires retrial.'
+        ],
+        memoryCue: 'Directed = judgment for one side; Mistrial = start over.'
+    },
+    {
+        group: 'Alford Plea / Nolo Contendere Plea',
+        points: [
+            'Alford Plea = guilty plea while maintaining innocence.',
+            'Nolo Contendere = plea where defendant does not contest the charge.',
+            'Both result in conviction; differ in defendant\'s position.'
+        ],
+        memoryCue: 'Alford = "I\'m innocent but pleading guilty"; Nolo = "I don\'t contest it".'
+    },
+    {
+        group: 'Motion in Limine / Motion for Summary Judgment',
+        points: [
+            'Motion in Limine = motion to exclude evidence before trial.',
+            'Motion for Summary Judgment = request for judgment without trial.',
+            'Limine is about evidence; Summary Judgment is about ending the case.'
+        ],
+        memoryCue: 'Limine = keep evidence out; Summary = end case early.'
+    },
+    {
+        group: 'Concurrent / Consecutive Sentences',
+        points: [
+            'Concurrent Sentences = sentences served at the same time.',
+            'Consecutive Sentences = sentences served one after another.',
+            'Concurrent = shorter total time; Consecutive = longer total time.'
+        ],
+        memoryCue: 'Concurrent = together (shorter); Consecutive = in line (longer).'
+    },
+    {
+        group: 'Appellant / Appellee',
+        points: [
+            'Appellant = the party filing an appeal.',
+            'Appellee = the party responding to an appeal.',
+            'Roles depend on who is appealing, not who won at trial.'
+        ],
+        memoryCue: 'Appellant = appeals; Appellee = replies.'
+    }
+];
+
+// Deposition Rules (Critical for Court Reporters)
+const learnFastDepositionRules = [
+    {
+        rule: 'Court Reporter Administers Oath',
+        details: 'The court reporter administers the oath UNLESS the attorney does so on the record.',
+        example: 'Reporter: "Do you solemnly swear to tell the truth...?" - Or attorney may handle it.'
+    },
+    {
+        rule: 'Exhibit Responsibility',
+        details: 'All exhibits marked are the reporter\'s responsibility UNLESS counsel retains them.',
+        example: 'Deposition Exhibit 1 marked by reporter unless attorney keeps originals.'
+    },
+    {
+        rule: 'Read and Sign Request',
+        details: 'Read and Sign MUST be requested BEFORE the deposition ends. No exceptions.',
+        example: 'Must ask: "Will there be a read and sign on this deposition?" before concluding.'
+    },
+    {
+        rule: '30-Day Review Period',
+        details: 'Deponent has 30 days to review and sign the transcript if Read and Sign is requested.',
+        example: 'Errata sheet due within 30 days with any corrections to testimony.'
+    },
+    {
+        rule: 'No Exhibit Admission in Depositions',
+        details: 'Only judges may admit exhibits. Depositions do NOT admit exhibits.',
+        example: 'Exhibits are "Marked for Identification" in depositions, NOT "Admitted."'
+    },
+    {
+        rule: 'Confidentiality Default',
+        details: 'Depositions are confidential UNLESS entered into court record.',
+        example: 'Do not distribute deposition without court order or stipulation.'
+    },
+    {
+        rule: 'Interpreter Must Be Sworn First',
+        details: 'If using an interpreter, they must be sworn before the witness.',
+        example: 'Swear interpreter first, then proceed with witness.'
+    },
+    {
+        rule: 'Witness Positioning',
+        details: 'Sit where you can hear the witness clearly and identify everyone in the room.',
+        example: 'Record: "Present: Attorney Smith, witness John Doe, and reporter Jane." At start of deposition.'
+    },
+    {
+        rule: '30(b)(6) Deposition - Organization',
+        details: 'A 30(b)(6) deposition is of an organization rather than an individual.',
+        example: 'Company designates representative to testify on organizational matters.'
+    },
+    {
+        rule: 'Errata Sheet for Changes',
+        details: 'Changes made during read and sign are noted on errata sheet; changes allowed but may reopen deposition.',
+        example: 'Errata Sheet: Page 5, Line 12: Changed "blue" to "black."'
+    }
+];
+
+// Transcript Formatting Rules (Georgia)
+const learnFastTranscriptFormattingRules = [
+    {
+        format: 'Margins',
+        court: 'Court Transcripts',
+        rules: 'Left: 1¾ inches; Right: ⅜ inch',
+        details: '1¾" left margin provides space for court filing and binding. ⅜" right margin for neat appearance.',
+        example: '|←1¾"→|  Text content area  |→⅜"|'
+    },
+    {
+        format: 'Margins',
+        court: 'Skills Test Transcripts',
+        rules: '1 inch on all sides',
+        details: 'Standard 1" margins for coursework; double-spaced throughout.',
+        example: '| 1" | Text content area | 1" |'
+    },
+    {
+        format: 'Lines per Page',
+        court: 'Court Transcripts',
+        rules: '25 lines per page, 63 characters per line',
+        details: 'Exact formatting required for official records. Each line must not exceed 63 characters.',
+        example: 'Page has exactly 25 numbered lines from top to bottom.'
+    },
+    {
+        format: 'Page Numbers',
+        court: 'Court Transcripts',
+        rules: 'Bottom right, consecutive',
+        details: 'Page numbers appear at the bottom right of every page, starting with page 2.',
+        example: '1, 2, 3, 4, 5... positioned at bottom right corner.'
+    },
+    {
+        format: 'Q & A Formatting',
+        court: 'Court Transcripts',
+        rules: '"Q" and "A" indented 5 spaces; text wraps to column 5',
+        details: 'Question and Answer dialogue must follow strict indentation. Each continues on next line at column 5.',
+        example: '     Q   What is your name?\n     A   My name is John Smith.'
+    },
+    {
+        format: 'Colloquy Formatting',
+        court: 'Court Transcripts',
+        rules: 'Speaker ID begins at 10 spaces; text wraps at 5 spaces',
+        details: 'Dialogue between attorneys and judge (not Q&A) uses different indentation.',
+        example: '          MR. SMITH: Your Honor, we object.\n     The record should reflect...'
+    },
+    {
+        format: 'Header',
+        court: 'Skills Test Transcripts',
+        rules: 'Required on every page with TestID / Date / LEG',
+        details: 'Header includes: Test ID (e.g., 180 Lit), Date, and LEG identifier.',
+        example: 'Header: TEST 180 LIT | March 26, 2026 | LEG'
+    },
+    {
+        format: 'Double-Spacing',
+        court: 'Skills Test Transcripts',
+        rules: 'Double-spaced throughout',
+        details: 'All text must be double-spaced on skills test transcripts.',
+        example: 'Line 1\n\nLine 3 (with blank line between)'
+    },
+    {
+        format: 'Exhibit Listing',
+        court: 'Court Transcripts',
+        rules: 'Exhibits not admitted are not attached but must be listed in the index.',
+        details: 'Only "Admitted" exhibits are physically attached to transcripts. "Marked for ID" and "Not Admitted" are listed only.',
+        example: 'Exhibit 3 - Marked for Identification only (not attached)'
+    },
+    {
+        format: 'Cover Page Components',
+        court: 'Deposition Transcripts',
+        rules: 'Include: Case name, date, parties, location, court reporter name, certification',
+        details: 'Depositions require formal cover page with all identifying information.',
+        example: 'DEPOSITION OF JOHN SMITH | Date: March 26, 2026 | Reported by: Jane Doe, CSR'
+    },
+    {
+        format: 'Appearance Page',
+        court: 'Deposition Transcripts',
+        rules: 'Lists all present: attorneys, parties, court reporter, witness',
+        details: 'First page after cover identifies everyone in the room.',
+        example: 'APPEARANCES: Mr. Smith (Plaintiff), Ms. Jones (Defendant), Jane Doe (Reporter)'
+    },
+    {
+        format: 'Seal Requirement',
+        court: 'Deposition Transcripts',
+        rules: 'Seal is REQUIRED for depositions',
+        details: 'Official seal from court reporter must appear on deposition transcripts.',
+        example: '[OFFICIAL CSR SEAL]'
+    }
+];
+
+// Courtroom Rules and Procedures
+const learnFastCourtroomRules = [
+    {
+        rule: 'Off the Record Authority',
+        procedure: 'Only the judge may authorize going off the record in court.',
+        example: 'Reporter requests: "Your Honor, request to go off the record." Judge: "Off the record." Then: "Back on the record."'
+    },
+    {
+        rule: 'Backup Recording Requirement',
+        procedure: 'Court reporters must maintain a backup recording at all times.',
+        example: 'Have both steno machine AND audio recorder running during all court proceedings.'
+    },
+    {
+        rule: 'Examination Order',
+        procedure: 'Standard order: Direct → Cross → Redirect → Recross. Always label as Redirect (not re-re-re-direct).',
+        example: 'Keep consistent: "Redirect Examination" and "Recross Examination" for clarity.'
+    },
+    {
+        rule: 'Charge Conference',
+        procedure: 'Conducted OUTSIDE presence of jury, occurs before closing arguments, determines jury instructions.',
+        example: 'Often done informally off record, then formally on record with objections stated.'
+    },
+    {
+        rule: 'Cannot Make a Clear Record',
+        procedure: 'If cross-talk occurs: Say "Excuse me, Your Honor, I cannot make a clear record."',
+        example: 'Speaker: "Your Honor, I cannot make a clear record" to stop multiple voices.'
+    },
+    {
+        rule: 'Addressing the Court',
+        procedure: 'Always address judge as "Your Honor"; attorneys as "Mr./Ms."',
+        example: '"Your Honor, may I approach the bench?" or "Ms. Smith, do you object?"'
+    },
+    {
+        rule: 'Approaching the Bench',
+        procedure: 'Ask permission to approach the bench.',
+        example: '"Your Honor, may I approach the bench?"'
+    },
+    {
+        rule: 'Being Excused',
+        procedure: 'Ask permission to be excused.',
+        example: '"May I be excused?" before leaving the witness stand or courtroom.'
+    },
+    {
+        rule: 'Jackson-Denno Hearing',
+        procedure: 'Pre-trial or trial proceeding OUTSIDE jury presence to determine if confession was voluntary.',
+        example: 'Court assesses if defendant\'s statement was knowingly given or coerced.'
+    },
+    {
+        rule: 'Exhibit Management',
+        procedure: 'Reporter is keeper of the record: ensure no duplicate exhibits, correct numbering (P-1, D-5, etc.), clear exhibit log.',
+        example: 'Plaintiff exhibits: P-1, P-2, P-3... Defendant exhibits: D-1, D-2, D-3...'
+    },
+    {
+        rule: 'Exhibit Status Categories',
+        procedure: 'Marked for Identification | Admitted into Evidence | Not Admitted. Only admitted exhibits are attached to transcripts.',
+        example: 'Exhibit 5: "Marked for Identification as Exhibit P-5."'
+    }
+];
+
+// Testing Rules (Critical)
+const learnFastTestingRules = [
+    {
+        rule: 'Anonymous Submission',
+        details: 'No name may appear ANYWHERE on test materials - files, transcripts, flash drives.',
+        example: 'Use only Candidate Number (e.g., "Candidate #2847") or TestID.'
+    },
+    {
+        rule: 'Three Flash Drives Required',
+        details: 'Each flash drive must contain: (1) Transcript (PDF), (2) Room audio, (3) Notes (voice/steno/annotations).',
+        example: 'Clearly label each drive: "Flash Drive 1 - Transcript | Flash Drive 2 - Audio | Flash Drive 3 - Notes"'
+    },
+    {
+        rule: 'File Naming Correctness',
+        details: 'Files must be correctly named per testing instructions to avoid disqualification.',
+        example: 'Format: "Candidate2847_Transcript.pdf" NOT "MyTranscript.pdf" or "CSR_Test.pdf"'
+    },
+    {
+        rule: 'Audio Backup',
+        details: 'One room audio backup is allowed.',
+        example: 'Up to one redundant audio file permitted; more may cause disqualification.'
+    },
+    {
+        rule: 'Skills Test Format',
+        details: 'One continuous audio recording with three segments back-to-back: 180 Literary | 200 Jury Charge | 225 Q&A',
+        example: '180 Lit (5-10 min) → 200 JC (5-10 min) → 225 QA (5-10 min) in one continuous file.'
+    },
+    {
+        rule: 'Header Format',
+        details: 'Testing Transcripts: Candidate number | Test date | LEG',
+        example: 'Header every page: "Candidate #2847 | March 26, 2026 | LEG"'
+    },
+    {
+        rule: 'No Internet Access',
+        details: 'Internet must not be accessible during testing.',
+        example: 'Disable WiFi, unplug ethernet, airplane mode on devices.'
+    },
+    {
+        rule: 'No Talking After Testing Begins',
+        details: 'Absolute silence; any conversation could result in disqualification.',
+        example: 'No questions to others, no phone calls, no audio commentary after "Begin recording" instruction.'
+    },
+    {
+        rule: 'No Cover Page, Index, or Certificate for Skills Test',
+        details: 'Skills test transcripts do NOT require cover page, index, or certificate like depositions do.',
+        example: 'Submit: Header, transcript content, annotations only.'
+    },
+    {
+        rule: 'Disqualification for Non-Compliance',
+        details: 'Failure to follow file submission rules may result in disqualification.',
+        example: 'Missing files, wrong naming, extra files, or name visible = possible disqualification.'
+    }
+];
+
+// Ethics Rules (Georgia Court Reporters)
+const learnFastEthicsRules = [
+    {
+        rule: 'Personal Review and Certification',
+        details: 'Reporter must PERSONALLY review and certify the transcript. No exceptions.',
+        example: 'You must read every word of every page before signing certification.'
+    },
+    {
+        rule: 'Record Retention',
+        details: 'Notes and recordings must be retained for at least 5 years.',
+        example: 'Keep steno notes, audio files, and all working documents for minimum 5 years.'
+    },
+    {
+        rule: 'Impartiality',
+        details: 'Reporters must remain fair and impartial at all times.',
+        example: 'Do not favor one side over another; maintain neutral tone and accuracy.'
+    },
+    {
+        rule: 'Conflict of Interest Disclosure',
+        details: 'Any conflicts of interest must be disclosed immediately.',
+        example: 'If you know one of the parties, notify counsel at deposition start.'
+    },
+    {
+        rule: 'Method of Practice Limitation',
+        details: 'Reporters may not practice outside their certified method.',
+        example: 'If certified in steno, do not offer services as typist. If certified in voice, do not market as steno writer.'
+    },
+    {
+        rule: 'Gift Limitations',
+        details: 'Gifts to clients are limited to $50 per year.',
+        example: 'You may give a holiday gift worth max $50; cannot accept large gifts in return.'
+    },
+    {
+        rule: 'Continuing Education Deadline',
+        details: 'CE credits must be completed by December 31 each year.',
+        example: 'All CE coursework and certificates must be submitted/completed by Dec 31.'
+    },
+    {
+        rule: 'License Renewal Deadline',
+        details: 'License renewal deadline is April 1.',
+        example: 'Begin renewal process early; submit before April 1 to maintain valid license.'
+    },
+    {
+        rule: 'Scope of Legal Authority',
+        details: 'Ultra Vires = acting outside legal authority. Know your scope.',
+        example: 'Do not give legal advice; cannot act as attorney or mediator.'
+    },
+    {
+        rule: 'Confidentiality Obligation',
+        details: 'Protect confidentiality of all depositions and statements not entered into court record.',
+        example: 'Do not discuss or share deposition details with unauthorized parties.'
+    }
+];
+
+// Courtroom Procedures and Key Processes
+const learnFastCourtroomProcedures = [
+    {
+        section: 'Criminal Cases - Standards',
+        procedure: 'Standard of Proof: Beyond a Reasonable Doubt',
+        details: 'Highest standard; prosecution must prove case so thoroughly jury has no reasonable doubt.'
+    },
+    {
+        section: 'Civil Cases - Standards',
+        procedure: 'Standard of Proof: Preponderance of the Evidence',
+        details: 'Lower standard; plaintiff\'s evidence must be "more likely than not" (50% + 1).'
+    },
+    {
+        section: 'Pretrial Motions - Common Types',
+        procedure: 'Motion in Limine, Motion for Summary Judgment, Immunity Motion, Declaratory Judgment',
+        details: 'These determine what evidence enters trial or whether case even goes to trial.'
+    },
+    {
+        section: 'Trial Order - Civil',
+        procedure: 'Complaint → Answer → Discovery (Depositions, Interrogatories) → Cross-claims → Class Actions possible',
+        details: 'Discovery is where depositions happen; trial follows.'
+    },
+    {
+        section: 'Trial Order - Criminal',
+        procedure: 'Arraignment → Pre-trial motions → Trial (jury selection, opening, evidence, closing, jury instructions)',
+        details: 'Criminal trial structure differs from civil in burden and procedure.'
+    },
+    {
+        section: 'Pleas and Sentencing',
+        procedure: 'Guilty | Alford Plea (innocent but evidence sufficient) | Nolo Contendere (no contest)',
+        details: 'Each plea type has different implications for defendants and appeals.'
+    },
+    {
+        section: 'Sentencing Structure',
+        procedure: 'Concurrent (run simultaneously) vs. Consecutive (one after another)',
+        details: 'Concurrent = shorter total time served; Consecutive = longer.'
+    },
+    {
+        section: 'Mistrial',
+        procedure: 'Trial terminated due to error, deadlock, or circumstance; case usually retried.',
+        details: 'Different from directed verdict; mistrial requires starting over.'
+    },
+    {
+        section: 'Condemnation Case',
+        procedure: 'Taking of private property for public use with fair compensation required.',
+        details: 'Special civil case type for eminent domain situations.'
+    },
+    {
+        section: 'Pro Se Litigant',
+        procedure: 'Party representing themselves without attorney; often unfamiliar with procedure.',
+        details: 'Still entitled to full rights; reporter must be extra clear with record-keeping.'
+    },
+    {
+        section: 'Guardian ad Litem',
+        procedure: 'Court-appointed representative for minor or incapacitated person; may examine witnesses.',
+        details: 'Different from attorney; represents interests of vulnerable party.'
+    }
+];
+
+// Study Tips from Zoom Notes
+const learnFastStudyTips = [
+    {
+        tip: 'Read Transcripts Backwards When Proofreading',
+        purpose: 'Prevents your brain from auto-correcting; forces you to check each word individually.',
+        example: 'Start from the last word of the transcript and work backwards line by line.'
+    },
+    {
+        tip: 'Practice Identifying Key Elements',
+        practice: 'Focus on recognizing: Objections, Colloquy vs. Q&A, Standards of Proof, Exhibit Status',
+        example: 'Read a transcript and mark every objection, highlight all colloquy sections in different color.'
+    },
+    {
+        tip: 'Review Jury Charges Online',
+        purpose: 'Familiarize yourself with common jury charge language and structure.',
+        example: 'Study Georgia Pattern Jury Instructions; recognize phrases like "burden of proof" and "preponderance."'
+    },
+    {
+        tip: 'Practice Formatting Repeatedly',
+        purpose: 'Muscle memory: the exact 1¾ inch left margin, 5-space Q&A indentation must become automatic.',
+        example: 'Format 10 sample transcripts using Georgia court rules; time yourself.'
+    },
+    {
+        tip: 'Write Answers on the Line (Not Circled)',
+        purpose: 'On written tests, be clear and professional; circles can be misread.',
+        example: 'Write: "Objection" not (Objection) or ⭕Objection'
+    },
+    {
+        tip: 'Distinguish Colloquy from Q&A Immediately',
+        purpose: 'Different indentation rules apply; catching this early prevents format errors.',
+        example: 'Colloquy (10 spaces speaker ID): "THE COURT: We need..." | Q&A (5 spaces): "Q What...?"'
+    },
+    {
+        tip: 'Master Annotation in Digital Reporting',
+        purpose: 'Timestamps and keywords are essential; ≥5 keywords per entry required.',
+        example: 'Annotation: "[1:23:45] witness identification, defendant description, location - near the store"'
+    },
+    {
+        tip: 'Know Exhibit Status Categories Cold',
+        purpose: 'Cannot confuse "Marked for ID," "Admitted," and "Not Admitted" - affects transcript completion.',
+        example: 'Only admitted exhibits are attached. The others must be listed in index only.'
+    },
+    {
+        tip: 'Memorize Key Distinctions',
+        purpose: 'Objection vs. Exception, Direct vs. Circumstantial Evidence, Concurrent vs. Consecutive - test these constantly.',
+        example: 'Make flashcards; test yourself daily on legal definitions.'
+    },
+    {
+        tip: 'Simulate Skills Test Conditions',
+        purpose: 'Practice under timed, silent conditions with no internet to build endurance and accuracy.',
+        example: 'Do a full skills test run: 180 Lit + 200 JC + 225 QA back-to-back, timed, isolated.'
+    }
+];
+
+// ===================== GAME MODE VOCABULARY =====================
+// Court Reporting Q&A Format (Playable in Game Mode)
+
+const courtReportingGameQA = [
+    { term: 'When must Read and Sign be requested in a deposition?', definition: 'Before the deposition ends.' },
+    { term: 'How many days does a deponent have to review the transcript if Read and Sign is requested?', definition: '30 days.' },
+    { term: 'Who administers the oath in a deposition?', definition: 'The court reporter, unless the attorney does so on the record.' },
+    { term: 'Are exhibits admitted in depositions?', definition: 'No. Exhibits are only "Marked for Identification," never admitted.' },
+    { term: 'What is the responsibility of a court reporter regarding marked exhibits?', definition: 'All marked exhibits are the reporter\'s responsibility unless counsel retains them.' },
+    { term: 'Are depositions confidential?', definition: 'Yes, unless entered into the court record.' },
+    { term: 'Must an interpreter be sworn?', definition: 'Yes. An interpreter must be sworn before the witness.' },
+    { term: 'What is an errata sheet?', definition: 'A document listing changes made after the deponent reviews and signs the transcript.' },
+    { term: 'What type of deposition involves an organization rather than an individual?', definition: '30(b)(6) deposition.' },
+    { term: 'Left margin for court transcripts (Georgia)?', definition: '1¾ inches.' },
+    { term: 'Right margin for court transcripts (Georgia)?', definition: '⅜ inch.' },
+    { term: 'Margins for skills test transcripts?', definition: '1 inch on all sides.' },
+    { term: 'Lines per page for court transcripts?', definition: '25 lines per page.' },
+    { term: 'Characters per line for court transcripts?', definition: '63 characters per line.' },
+    { term: 'Q and A indentation for court transcripts?', definition: '5 spaces.' },
+    { term: 'Speaker ID indentation for colloquy?', definition: '10 spaces, wraps to 5 spaces.' },
+    { term: 'Who may authorize going off the record in court?', definition: 'Only the judge.' },
+    { term: 'What must a court reporter maintain at all times?', definition: 'A backup recording.' },
+    { term: 'What is the correct examination order in court?', definition: 'Direct, Cross, Redirect, Recross.' },
+    { term: 'What should you say if cross-talk prevents a clear record?', definition: '"Excuse me, Your Honor, I cannot make a clear record."' },
+    { term: 'What is a Jackson-Denno Hearing?', definition: 'A proceeding to determine if a defendant\'s confession was made voluntarily and without coercion.' },
+    { term: 'What three exhibit status categories exist?', definition: 'Marked for Identification, Admitted into Evidence, Not Admitted.' },
+    { term: 'Standard of proof in criminal cases?', definition: 'Beyond a Reasonable Doubt.' },
+    { term: 'Standard of proof in civil cases?', definition: 'Preponderance of the Evidence.' },
+    { term: 'Can names appear on test materials?', definition: 'No. No name may appear anywhere on test materials.' },
+    { term: 'How many flash drives are required for skills testing?', definition: 'Three: Transcript (PDF), Room audio, Notes.' },
+    { term: 'What format must files follow for skills testing?', definition: 'Correctly named according to testing instructions.' },
+    { term: 'How many audio backups are allowed?', definition: 'One room audio backup is allowed.' },
+    { term: 'What is the skills test format?', definition: 'One continuous audio: 180 Literary + 200 Jury Charge + 225 Q&A back-to-back.' },
+    { term: 'Is internet access allowed during testing?', definition: 'No.' },
+    { term: 'Can you talk during skills testing?', definition: 'No. Absolute silence after testing begins.' },
+    { term: 'Reporter must personally _____ the transcript?', definition: 'Review and certify.' },
+    { term: 'How long must notes and recordings be retained?', definition: 'At least 5 years.' },
+    { term: 'What gift limit applies to clients per year?', definition: '$50 maximum.' },
+    { term: 'Continuing Education deadline (Georgia)?', definition: 'December 31.' },
+    { term: 'License renewal deadline (Georgia)?', definition: 'April 1.' },
+    { term: 'What must reporters avoid regarding their certified method?', definition: 'Practicing outside their certified method.' },
+    { term: 'What must be disclosed immediately?', definition: 'Any conflicts of interest.' },
+    { term: 'Reporters must remain _____ at all times?', definition: 'Fair and impartial.' },
+    { term: 'Deposition components include...?', definition: 'Cover page, appearance page, index, transcript, certificate, seal, errata sheet (if applicable).' }
+];
+
+// Trial Procedures Q&A (Civil and Criminal)
+const trialProceduresGameQA = [
+    { term: 'First step in a civil trial?', definition: 'Jury selection (voir dire).' },
+    { term: 'Second step in a civil trial?', definition: 'Opening statements.' },
+    { term: 'After witness examination in civil trial, what comes next?', definition: 'Physical evidence is presented.' },
+    { term: 'What happens after plaintiff presents evidence in civil trial?', definition: 'Plaintiff rests.' },
+    { term: 'What motion can be made when evidence is insufficient?', definition: 'Motion for directed verdict.' },
+    { term: 'Order of examination at trial?', definition: 'Direct, Cross, Redirect, Recross.' },
+    { term: 'After defendant\'s case in civil trial?', definition: 'Defendant rests.' },
+    { term: 'What follows defendant\'s case in civil trial?', definition: 'Plaintiff\'s rebuttal.' },
+    { term: 'Comes after plaintiff\'s rebuttal in civil trial?', definition: 'Defendant\'s surrebuttal.' },
+    { term: 'After closing arguments in civil trial?', definition: 'Jury instructions and jury deliberation.' },
+    { term: 'Final step of civil trial?', definition: 'Entry of judgment.' },
+    { term: 'First step in criminal trial?', definition: 'Jury selection.' },
+    { term: 'What is the prosecution\'s initial presentation called?', definition: 'Prosecution\'s case in chief.' },
+    { term: 'After prosecution rests in criminal trial?', definition: 'Defense\'s case in chief.' },
+    { term: 'After defense rests in criminal trial?', definition: 'Prosecution rebuttal & defense surrebuttal.' },
+    { term: 'What comes after closing arguments in criminal trial?', definition: 'Jury instructions and jury deliberation.' },
+    { term: 'Unique to criminal trials (not civil)?', definition: 'Polling of the jury.' }
+];
+
+// Comprehensive Legal Vocabulary Q&A
+const legalVocabularyGameQA = [
+    { term: 'Abeyance', definition: 'A lapse in succession when no person has title vested.' },
+    { term: 'Abstract of Title', definition: 'Official record excerpts showing chain of title and facts affecting marketability.' },
+    { term: 'Ad Damnum', definition: 'Clause stating the damages claimed in a writ or declaration.' },
+    { term: 'Ad Hoc', definition: 'For this case only.' },
+    { term: 'Adjudication', definition: 'The rendering of a decision, or the decision itself.' },
+    { term: 'Ad Litem', definition: 'For the purposes of the suit; e.g., guardian ad litem.' },
+    { term: 'A Fortiori', definition: 'With greater reason.' },
+    { term: 'Aliunde', definition: 'From another source; from outside.' },
+    { term: 'Allocution', definition: 'Court inquiry asking why judgment should not be pronounced after conviction.' },
+    { term: 'Ancillary', definition: 'Auxiliary; supplementary.' },
+    { term: 'Asportation', definition: 'Carrying away; felonious removal of goods.' },
+    { term: 'Attachment', definition: 'Procedure securing a lien against property to satisfy a potential obligation.' },
+    { term: 'Bill of Particulars', definition: 'Statement listing specific acts charged.' },
+    { term: 'Canon', definition: 'A system of correlated rules or standards.' },
+    { term: 'Codicil', definition: 'Supplement to a will affecting its terms.' },
+    { term: 'Contumacy', definition: 'Stubborn resistance to authority.' },
+    { term: 'Corpus Delicti', definition: 'Body of the crime; the physical object upon which the crime was committed.' },
+    { term: 'Declaratory Judgment', definition: 'Judgment declaring rights without ordering action or execution.' },
+    { term: 'Demurrer', definition: 'Pleading admitting facts for argument but asserting no valid legal claim exists.' },
+    { term: 'Directed Verdict', definition: 'Verdict the judge instructs the jury to return when no factual issue exists.' },
+    { term: 'Direct Evidence', definition: 'Evidence requiring no inference, such as eyewitness testimony.' },
+    { term: 'Doctrine of Equivalents', definition: 'Patent rule treating devices as same when they perform substantially same work, way, and result.' },
+    { term: 'En Banc', definition: 'All judges of one court sitting together.' },
+    { term: 'Encumbrance', definition: 'Claim, lien, charge, or liability attached to real property.' },
+    { term: 'Enjoin', definition: 'To stop an act by court order (injunction).' },
+    { term: 'Equity (Trial)', definition: 'System of justice for causes not governed by specific statutes.' },
+    { term: 'Equity (Property/Contract)', definition: 'Interest in property after subtracting mortgage or contract balance due.' },
+    { term: 'Ex Relatione (Ex Rel.)', definition: 'Proceeding brought by the state on relation/information of a private relator.' },
+    { term: 'Headnote', definition: 'Summary material preceding a court opinion.' },
+    { term: 'Inculpatory', definition: 'Tending to incriminate.' },
+    { term: 'In Personam', definition: 'Against a person; imposing personal liability.' },
+    { term: 'In Re', definition: 'In the matter of.' },
+    { term: 'Laches', definition: 'Unreasonable delay in bringing suit or seeking equitable relief.' },
+    { term: 'Lex Loci', definition: 'Law of the place where the event occurred.' },
+    { term: 'Mesne', definition: 'Intermediate.' },
+    { term: 'Movant', definition: 'Party requesting a court order by motion.' },
+    { term: 'Nisi Prius', definition: 'Trial court where cases are tried, often to a jury.' },
+    { term: 'Next Friend', definition: 'Adult acting on behalf of another, usually a minor, without formal appointment.' },
+    { term: 'Nolle Prosequi', definition: 'Entry showing plaintiff/prosecutor will proceed no further.' },
+    { term: 'Nonfeasance', definition: 'Failure to perform a required duty.' },
+    { term: 'Novation', definition: 'Substitution of a new contract, debtor, or obligor for an existing one.' },
+    { term: 'Nunc Pro Tunc', definition: 'Now for then; retroactive entry correcting the record.' },
+    { term: 'Praecipe', definition: 'Writ commanding action or appearance to show cause.' },
+    { term: 'Prospectus', definition: 'Document describing nature and purpose of a share or debenture issue.' },
+    { term: 'Putative', definition: 'Commonly accepted or supposed; alleged.' },
+    { term: 'Quantum Meruit', definition: 'Recovery for the reasonable value of services.' },
+    { term: 'Quantum Valebant', definition: 'Recovery for the reasonable value of goods.' },
+    { term: 'Quash', definition: 'To set aside, void, or nullify.' },
+    { term: 'Quitclaim', definition: 'To release a claim/title without warranties.' },
+    { term: 'Reductio ad Absurdum', definition: 'Disproving by showing absurd consequence.' },
+    { term: 'Res Gestae', definition: 'Things done; acts/declarations admissible as part of event context.' },
+    { term: 'Res Ipsa Loquitur', definition: 'The thing speaks for itself; negligence inferred from occurrence.' },
+    { term: 'Res Judicata', definition: 'Matter formerly in controversy and now judicially settled.' },
+    { term: 'Sua Sponte', definition: 'Court acting on its own motion.' },
+    { term: 'Supersedeas Bond', definition: 'Bond to stay judgment/execution and protect opposing party.' },
+    { term: 'Tenancy by Entirety', definition: 'Spousal joint ownership where survivor retains full ownership.' },
+    { term: 'Ultra Vires', definition: 'Beyond legal powers or authority.' },
+    { term: 'Unclean Hands', definition: 'Equity doctrine requiring fair conduct by party seeking equitable relief.' },
+    { term: 'Usury', definition: 'Charging more than legal interest rate.' },
+    { term: 'Uttering', definition: 'Putting into circulation or offering for use, e.g., a forged instrument.' },
+    { term: 'Viz.', definition: 'Namely; that is to say.' }
+];
+
+// Comprehensive Medical Vocabulary Q&A
+const medicalVocabularyGameQA = [
+    { term: 'Abduct', definition: 'Draw away from the midline.' },
+    { term: 'Abscess', definition: 'Localized collection of pus.' },
+    { term: 'Acetabulum', definition: 'Hip socket holding femur head.' },
+    { term: 'Acromioclavicular Joint', definition: 'Shoulder–collarbone joint.' },
+    { term: 'Acute', definition: 'Short, severe.' },
+    { term: 'Adduct', definition: 'Draw toward midline.' },
+    { term: 'Afebrile', definition: 'Without fever.' },
+    { term: 'Allesthesia', definition: 'Sensation felt in wrong place.' },
+    { term: 'Anastomosis', definition: 'Connection between vessels.' },
+    { term: 'Arthroscopy', definition: 'Scope into joint.' },
+    { term: 'Asphyxia', definition: 'Lack of oxygen; severe oxygen deprivation.' },
+    { term: 'Bariatrics', definition: 'Study of overweight and obesity.' },
+    { term: 'Basilar', definition: 'Pertaining to a base or basal part.' },
+    { term: 'Benign', definition: 'Not malignant.' },
+    { term: 'Bicuspid', definition: 'Two points or cusps.' },
+    { term: 'Brachial Plexus', definition: 'Nerve network in arm.' },
+    { term: 'Bronchiectasis', definition: 'Dilated bronchi.' },
+    { term: 'Bruit', definition: 'Abnormal sound heard during auscultation.' },
+    { term: 'Canines', definition: 'Pointed teeth; fang teeth.' },
+    { term: 'Cerebrospinal', definition: 'Brain and spinal cord.' },
+    { term: 'Cervical', definition: 'Pertaining to neck or constricted part of organ.' },
+    { term: 'Cholecystectomy', definition: 'Gallbladder removal.' },
+    { term: 'Chondromalacia', definition: 'Abnormal softening of cartilage.' },
+    { term: 'Chronic', definition: 'Persisting over a long period.' },
+    { term: 'Cirrhosis', definition: 'Liver scarring and disease.' },
+    { term: 'Creatinine', definition: 'Substance found in muscle and blood, excreted in urine.' },
+    { term: 'Cuspid', definition: 'One cusp or point; canine tooth.' },
+    { term: 'D & C (Dilation and Curettage)', definition: 'Dilation of cervix followed by curettage of uterus.' },
+    { term: 'Discogram', definition: 'Graphic record of intervertebral disc.' },
+    { term: 'Dorsal', definition: 'Back.' },
+    { term: 'Dysphagia', definition: 'Difficulty in swallowing.' },
+    { term: 'Ecchymosis', definition: 'Larger bruise from bleeding under skin.' },
+    { term: 'Edema', definition: 'Presence of abnormally large amounts of fluid in tissues.' },
+    { term: 'Embolus', definition: 'Floating clot in vessel.' },
+    { term: 'Encephalopathy', definition: 'Any degenerative disease of the brain.' },
+    { term: 'Fasciculated', definition: 'Clustered together in bundles.' },
+    { term: 'Fasciitis', definition: 'Inflammation of fascia (fibrous tissue band).' },
+    { term: 'Fibrillation', definition: 'Small involuntary muscle fiber contraction.' },
+    { term: 'Fibrosis', definition: 'Formation of fibrous tissue.' },
+    { term: 'Fibula', definition: 'Smaller lower-leg bone.' },
+    { term: 'Foramenotomy', definition: 'Operation to remove roof of intervertebral foramina.' },
+    { term: 'Fundus', definition: 'The bottom or base of anything (e.g., uterus, eye).' },
+    { term: 'Gastroenteritis', definition: 'Stomach and intestine inflammation.' },
+    { term: 'Glioblastoma', definition: 'Rapidly growing high-grade brain tumor.' },
+    { term: 'Hemoglobin', definition: 'Iron-containing pigment carrying oxygen in blood.' },
+    { term: 'Hypoxia', definition: 'Low oxygen at tissue level.' },
+    { term: 'Hypotension', definition: 'Low blood pressure.' },
+    { term: 'Ileum', definition: 'Small intestine segment.' },
+    { term: 'Ileus', definition: 'Bowel obstruction.' },
+    { term: 'Ilium', definition: 'Hip bone (pelvic bone).' },
+    { term: 'Impetigo', definition: 'Bacterial skin infection with weeping lesions.' },
+    { term: 'Incisors', definition: 'Front chisel-shaped teeth for cutting.' },
+    { term: 'Lordosis', definition: 'Abnormally increased spinal curvature.' },
+    { term: 'Luxation', definition: 'Dislocation; bone displaced from joint.' },
+    { term: 'Meninges', definition: 'Three membranes enveloping brain and spinal cord.' },
+    { term: 'Metastasis', definition: 'Spread of disease to another location.' },
+    { term: 'Necrotic', definition: 'Descriptive of death of tissue portion.' },
+    { term: 'Nephrology', definition: 'Scientific study of the kidney.' },
+    { term: 'Neurology', definition: 'Branch of medicine dealing with nervous system.' },
+    { term: 'Neuron', definition: 'Conducting cell of nervous system.' },
+    { term: 'Nystagmus', definition: 'Involuntary rapid eyeball movement.' },
+    { term: 'Oophorectomy', definition: 'Removal of an ovary or ovaries.' },
+    { term: 'Oophorocystectomy', definition: 'Excision of an ovarian cyst.' },
+    { term: 'Ophthalmology', definition: 'Branch dealing with anatomy and diseases of the eye.' },
+    { term: 'Orthopedics', definition: 'Surgery concerned with skeletal system and joints.' },
+    { term: 'Paracentesis', definition: 'Aspiration (removal of fluid) commonly from abdomen.' },
+    { term: 'Perfusion', definition: 'Passage of fluid through vessels of specific organ.' },
+    { term: 'Petechia (Petechiae)', definition: 'Tiny red pinpoint spots on skin.' },
+    { term: 'Pituitary', definition: 'Hormone-secreting master gland at brain base.' },
+    { term: 'Plantar Fasciitis', definition: 'Inflammation of fascia on foot sole.' },
+    { term: 'Pulmonology', definition: 'Medical science concerning lungs.' },
+    { term: 'Raynaud\'s Disease', definition: 'Vascular disorder with reduced finger/toe blood flow.' },
+    { term: 'Refraction', definition: 'Deviation of light or process of determining eye correction.' },
+    { term: 'Septicemia', definition: 'Presence of pathogenic organisms in blood (blood poisoning).' },
+    { term: 'Sequela', definition: 'Condition following and resulting from disease.' },
+    { term: 'Sphygmomanometer', definition: 'Instrument for measuring blood pressure.' },
+    { term: 'Spondylitis', definition: 'Inflammation of one or more vertebrae.' },
+    { term: 'Spondylosis', definition: 'Degenerative changes of vertebrae.' },
+    { term: 'Spondylolisthesis', definition: 'Forward displacement of lumbar vertebra(e).' },
+    { term: 'Stapedectomy', definition: 'Surgical opening in stapes (middle-ear bone).' },
+    { term: 'Sternum', definition: 'The breastbone.' },
+    { term: 'Syncope', definition: 'Temporary suspension of consciousness; fainting episode.' },
+    { term: 'Synovial', definition: 'Pertaining to viscid fluid found in joint cavities.' },
+    { term: 'Thoracic', definition: 'Pertaining to the chest or thorax.' },
+    { term: 'Tibia', definition: 'Inner and larger bone of lower leg (shinbone).' },
+    { term: 'Triage', definition: 'Sorting and classifying casualties to determine priority of treatment.' },
+    { term: 'Uvula', definition: 'Small fleshy mass hanging from soft palate.' },
+    { term: 'Venous', definition: 'Pertaining to the veins.' },
+    { term: 'Viscid', definition: 'Sticky, thick.' },
+    { term: 'Xiphoid', definition: 'Sword-shaped; lower end of sternum.' }
 ];
 
 // Built-in vocabulary provided by user
@@ -1783,6 +2570,31 @@ function seedBuiltInTerms() {
 
     let changed = false;
 
+    // Helper function to add vocabulary array to categories
+    const seedVocabularyArray = (vocabArray, categoryName) => {
+        let category = studyData.categories.find(c => c.name === categoryName);
+        if (!category) {
+            category = { name: categoryName, terms: [] };
+            studyData.categories.push(category);
+            changed = true;
+        }
+
+        vocabArray.forEach(item => {
+            const termKey = normalizeTerm(item.term);
+            const existingCount = category.terms.filter(t => normalizeTerm(t.term) === termKey).length;
+
+            if (existingCount === 0) {
+                category.terms.push({
+                    term: item.term,
+                    definition: item.definition,
+                    difficulty: Math.max(1, Math.min(5, Math.ceil(item.definition.length / 50)))
+                });
+                changed = true;
+            }
+        });
+    };
+
+    // Seed original built-in terms
     builtInTerms.forEach(item => {
         let category = studyData.categories.find(c => c.name === item.category);
         if (!category) {
@@ -1803,6 +2615,12 @@ function seedBuiltInTerms() {
             changed = true;
         }
     });
+
+    // Seed new game mode vocabulary arrays
+    seedVocabularyArray(courtReportingGameQA, '📋 Court Reporting Q&A');
+    seedVocabularyArray(trialProceduresGameQA, '⚖️ Trial Procedures');
+    seedVocabularyArray(legalVocabularyGameQA, '📜 Legal Vocabulary');
+    seedVocabularyArray(medicalVocabularyGameQA, '🏥 Medical Vocabulary');
 
     if (changed) {
         saveToLocalStorage();
@@ -2038,6 +2856,103 @@ function renderLearnFastView() {
     renderPunctuationWatchouts('learn-fast-punctuation');
 }
 
+// ===================== COURT REPORTING MODULES =====================
+
+function renderCourtReportingView() {
+    // Render Deposition Rules
+    const depositionContainer = document.getElementById('deposition-rules-content');
+    if (depositionContainer) {
+        depositionContainer.innerHTML = learnFastDepositionRules.map(rule => `
+            <article class="learn-fast-card">
+                <h4 class="learn-fast-card-title">${rule.rule}</h4>
+                <p><strong>Details:</strong> ${rule.details}</p>
+                <p><strong>Example:</strong> ${rule.example}</p>
+            </article>
+        `).join('');
+    }
+
+    // Render Transcript Formatting Rules
+    const formattingContainer = document.getElementById('transcript-formatting-content');
+    if (formattingContainer) {
+        formattingContainer.innerHTML = learnFastTranscriptFormattingRules.map(rule => `
+            <article class="learn-fast-card">
+                <h4 class="learn-fast-card-title">${rule.format} (${rule.court})</h4>
+                <p><strong>Rules:</strong> ${rule.rules}</p>
+                <p><strong>Details:</strong> ${rule.details}</p>
+                <p><strong>Example:</strong> <code>${rule.example}</code></p>
+            </article>
+        `).join('');
+    }
+
+    // Render Courtroom Rules
+    const courtroomContainer = document.getElementById('courtroom-rules-content');
+    if (courtroomContainer) {
+        courtroomContainer.innerHTML = learnFastCourtroomRules.map(rule => `
+            <article class="learn-fast-card">
+                <h4 class="learn-fast-card-title">${rule.rule}</h4>
+                <p><strong>Procedure:</strong> ${rule.procedure}</p>
+                <p><strong>Example:</strong> ${rule.example}</p>
+            </article>
+        `).join('');
+    }
+}
+
+function renderLegalTermsView() {
+    const container = document.getElementById('legal-confusion-content');
+    if (!container) return;
+
+    const legalCardsHtml = learnFastLegalConfusionSets.map(set => `
+        <article class="learn-fast-card">
+            <h4 class="learn-fast-card-title">${set.group}</h4>
+            <ul class="learn-fast-list">
+                ${set.points.map(point => `<li>${point}</li>`).join('')}
+            </ul>
+            <p class="learn-fast-cue">Cue: ${set.memoryCue}</p>
+        </article>
+    `).join('');
+
+    container.innerHTML = legalCardsHtml;
+}
+
+function renderTestingView() {
+    // Render Testing Rules
+    const testingContainer = document.getElementById('testing-rules-content');
+    if (testingContainer) {
+        testingContainer.innerHTML = learnFastTestingRules.map(rule => `
+            <article class="learn-fast-card">
+                <h4 class="learn-fast-card-title">${rule.rule}</h4>
+                <p><strong>Details:</strong> ${rule.details}</p>
+                <p><strong>Example:</strong> ${rule.example}</p>
+            </article>
+        `).join('');
+    }
+
+    // Render Study Tips
+    const tipsContainer = document.getElementById('study-tips-content');
+    if (tipsContainer) {
+        tipsContainer.innerHTML = learnFastStudyTips.map(tip => `
+            <article class="learn-fast-card">
+                <h4 class="learn-fast-card-title">${tip.tip}</h4>
+                <p><strong>Purpose:</strong> ${tip.purpose || tip.practice}</p>
+                <p><strong>Example:</strong> ${tip.example}</p>
+            </article>
+        `).join('');
+    }
+}
+
+function renderEthicsView() {
+    const container = document.getElementById('ethics-rules-content');
+    if (!container) return;
+
+    container.innerHTML = learnFastEthicsRules.map(rule => `
+        <article class="learn-fast-card">
+            <h4 class="learn-fast-card-title">${rule.rule}</h4>
+            <p><strong>Details:</strong> ${rule.details}</p>
+            <p><strong>Example:</strong> ${rule.example}</p>
+        </article>
+    `).join('');
+}
+
 function showView(viewId) {
     // Hide all views
     document.querySelectorAll('.view').forEach(view => {
@@ -2059,6 +2974,22 @@ function showView(viewId) {
 
     if (viewId === 'punctuation-watchouts-view') {
         renderPunctuationWatchouts('punctuation-watchouts-content');
+    }
+
+    if (viewId === 'court-reporting-view') {
+        renderCourtReportingView();
+    }
+
+    if (viewId === 'legal-terms-view') {
+        renderLegalTermsView();
+    }
+
+    if (viewId === 'testing-rules-view') {
+        renderTestingView();
+    }
+
+    if (viewId === 'ethics-view') {
+        renderEthicsView();
     }
 
     if (viewId === 'game-view') {

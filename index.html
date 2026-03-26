@@ -53,10 +53,10 @@
                         <span class="btn-text">Quiz Mode</span>
                         <span class="btn-desc">Test your knowledge</span>
                     </button>
-                    <button class="menu-btn btn-game-mode" onclick="showView('game-view')">
-                        <span class="btn-icon">G</span>
+                    <button class="menu-btn btn-game-mode featured-btn" onclick="showView('game-view')">
+                        <span class="btn-icon">🎮</span>
                         <span class="btn-text">Game Mode</span>
-                        <span class="btn-desc">Term challenge with score and streaks</span>
+                        <span class="btn-desc">Challenge yourself + track streaks & scores</span>
                     </button>
                     <button class="menu-btn btn-categories" onclick="showView('categories-view')">
                         <span class="btn-icon">📋</span>
@@ -77,6 +77,26 @@
                         <span class="btn-icon">✍️</span>
                         <span class="btn-text">Punctuation Watchouts</span>
                         <span class="btn-desc">Easy-miss punctuation checklist</span>
+                    </button>
+                    <button class="menu-btn btn-court-reporting" onclick="showView('court-reporting-view')">
+                        <span class="btn-icon">⚖️</span>
+                        <span class="btn-text">Court Reporting Rules</span>
+                        <span class="btn-desc">Deposition, formatting & procedures</span>
+                    </button>
+                    <button class="menu-btn btn-legal-terms" onclick="showView('legal-terms-view')">
+                        <span class="btn-icon">📜</span>
+                        <span class="btn-text">Legal Distinctions</span>
+                        <span class="btn-desc">Confusable court terms explained</span>
+                    </button>
+                    <button class="menu-btn btn-testing" onclick="showView('testing-rules-view')">
+                        <span class="btn-icon">📝</span>
+                        <span class="btn-text">Testing Rules</span>
+                        <span class="btn-desc">Skills test requirements & tips</span>
+                    </button>
+                    <button class="menu-btn btn-ethics" onclick="showView('ethics-view')">
+                        <span class="btn-icon">⚡</span>
+                        <span class="btn-text">Ethics & Professional Rules</span>
+                        <span class="btn-desc">Georgia reporter obligations</span>
                     </button>
                 </div>
             </section>
@@ -313,6 +333,81 @@
 
                 <div id="punctuation-watchouts-content" class="learn-fast-punctuation-grid punctuation-watchouts-content">
                     <!-- Punctuation watchouts render here -->
+                </div>
+            </section>
+
+            <!-- Court Reporting Rules View -->
+            <section id="court-reporting-view" class="view">
+                <div class="view-header">
+                    <button class="back-btn" onclick="showView('home-view')">&larr; Back</button>
+                    <h2>Court Reporting Rules</h2>
+                </div>
+
+                <div class="learn-fast-section">
+                    <h3>Deposition Rules</h3>
+                    <div id="deposition-rules-content" class="learn-fast-grid">
+                        <!-- Deposition rules render here -->
+                    </div>
+                </div>
+
+                <div class="learn-fast-section">
+                    <h3>Transcript Formatting (Georgia)</h3>
+                    <div id="transcript-formatting-content" class="learn-fast-grid">
+                        <!-- Transcript formatting rules render here -->
+                    </div>
+                </div>
+
+                <div class="learn-fast-section">
+                    <h3>Courtroom Rules & Procedures</h3>
+                    <div id="courtroom-rules-content" class="learn-fast-grid">
+                        <!-- Courtroom rules render here -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- Legal Terms Distinctions View -->
+            <section id="legal-terms-view" class="view">
+                <div class="view-header">
+                    <button class="back-btn" onclick="showView('home-view')">&larr; Back</button>
+                    <h2>Legal Distinctions</h2>
+                </div>
+
+                <div id="legal-confusion-content" class="learn-fast-grid">
+                    <!-- Legal confusion sets render here -->
+                </div>
+            </section>
+
+            <!-- Testing Rules View -->
+            <section id="testing-rules-view" class="view">
+                <div class="view-header">
+                    <button class="back-btn" onclick="showView('home-view')">&larr; Back</button>
+                    <h2>Skills Testing Rules</h2>
+                </div>
+
+                <div class="learn-fast-section">
+                    <h3>Testing Requirements</h3>
+                    <div id="testing-rules-content" class="learn-fast-grid">
+                        <!-- Testing rules render here -->
+                    </div>
+                </div>
+
+                <div class="learn-fast-section">
+                    <h3>Study Tips</h3>
+                    <div id="study-tips-content" class="learn-fast-grid">
+                        <!-- Study tips render here -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- Ethics Rules View -->
+            <section id="ethics-view" class="view">
+                <div class="view-header">
+                    <button class="back-btn" onclick="showView('home-view')">&larr; Back</button>
+                    <h2>Ethics & Professional Rules</h2>
+                </div>
+
+                <div id="ethics-rules-content" class="learn-fast-grid">
+                    <!-- Ethics rules render here -->
                 </div>
             </section>
 
