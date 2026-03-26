@@ -1050,6 +1050,120 @@ const medicalVocabularyGameQA = [
     { term: 'Xiphoid', definition: 'Shaped like a sword. As in the xiphoid process (lower end of the sternum).' }
 ];
 
+// Punctuation & Writing Rules Q&A (Game Mode)
+const punctuationGameQA = [
+    // Apostrophes
+    { term: 'How do you use apostrophes in contractions?', definition: 'Use an apostrophe to show missing letters: won\'t, don\'t' },
+    { term: 'How do you form possessive singular?', definition: 'Add \'s: the court\'s decision' },
+    { term: 'How do you form possessive plural?', definition: 'Add apostrophe after the s: the jurors\' chairs' },
+    { term: 'How do you write decades with apostrophes?', definition: 'Apostrophe replaces missing numbers: \'24, \'80s' },
+
+    // Periods
+    { term: 'Where does the period go with quotation marks?', definition: 'Period always goes inside quotation marks: He said, "Yes."' },
+    { term: 'How many spaces after a period?', definition: 'Two spaces after period' },
+
+    // Capitalization
+    { term: 'When do you capitalize Court?', definition: 'Capitalize Court, Court\'s when referring to a specific court' },
+    { term: 'When do you capitalize State?', definition: 'Capitalize State when personified (doing an action)' },
+    { term: 'Do you capitalize titles without last names?', definition: 'No. Write "the doctor" but "Doctor Smith"' },
+    { term: 'Do you capitalize words following dashes?', definition: 'No, do not capitalize words following dashes' },
+    { term: 'How do you write direct addresses?', definition: 'Capitalize: Yes, Doctor. Thank you, Counsel.' },
+    { term: 'Do you capitalize nouns tied to numerals?', definition: 'Yes, capitalize the noun: Count 3, Chapter 3, Exhibit 1. Exception: page, line, paragraph' },
+
+    // Numbers
+    { term: 'How do you write numbers one through ten?', definition: 'Spell out: one, two, three... through ten; first through tenth' },
+    { term: 'How do you write numbers 11 and above?', definition: 'Use numerals: 11, 35, 1 million' },
+    { term: 'How do you write percent?', definition: 'Spell out: 3 percent (not 3%)' },
+    { term: 'How do you write time?', definition: 'Use numerals: 3:00, 9 a.m., 9:00-5:00' },
+    { term: 'How do you write measurements?', definition: 'Use numerals: 1 yard, 1 bushel, 9 miles, 30 yards' },
+    { term: 'How do you write weapons and calibers?', definition: 'Colt .45' },
+    { term: 'How do you write fractions?', definition: 'Hyphenated: three-fourths' },
+    { term: 'How do you write ages?', definition: 'Ages are numerical. If at start of sentence, spell out: "Thirty-two years old..."' },
+    { term: 'What is the rule for number format consistency?', definition: 'Within the same sentence, use the same number format' },
+    { term: 'How must dates be written?', definition: 'Dates must be written numerically' },
+    { term: 'How do you write "$30-odd"?', definition: '"$30-odd" is correct (hyphenated)' },
+    { term: 'If no dollar sign is mentioned by the speaker, what do you do?', definition: 'Do not add one' },
+
+    // Yes/No Rules
+    { term: 'When do you use a comma after yes or no?', definition: 'When adding information after yes or no: Yes, I did. No, sir.' },
+    { term: 'When is no comma needed after yes or no?', definition: 'When yes or no is a direct answer with no additional info' },
+
+    // Commas - Direct Address
+    { term: 'How do you punctuate direct address?', definition: 'Comma used when speaking to someone: Please do it now, ma\'am.' },
+    { term: 'How do you punctuate "So, Diamond"?', definition: 'A direct address always needs a comma: "So, Diamond,"' },
+
+    // Commas - Filler/Non-essential Words
+    { term: 'How do you punctuate throwaway/filler words?', definition: 'Set off with commas: Well, I agree. / you know, like, I mean, yeah' },
+    { term: 'What words should be surrounded by commas?', definition: 'according, perhaps, indeed, apparently, obviously, as you already know, you know' },
+
+    // Commas - Conjunctive Adverbs
+    { term: 'How do you punctuate conjunctive adverbs?', definition: '"Otherwise," "However," "Therefore," etc. need a comma' },
+
+    // Commas - too/though
+    { term: 'How do you punctuate "too" in a sentence?', definition: '"too" attracts a comma. In middle of sentence, set off with commas.' },
+    { term: 'How do you punctuate "though" in a sentence?', definition: '"though" in the middle of a sentence is set off with commas' },
+
+    // Commas - Now
+    { term: 'How do you punctuate after "now"?', definition: 'After the word now, always a comma' },
+
+    // Commas - Other
+    { term: 'How do you punctuate dates with year?', definition: 'Comma after year in full date: May 5, 2024, was warm.' },
+    { term: 'How do you punctuate city and state?', definition: 'Comma between city and state: Atlanta, Georgia, is home.' },
+    { term: 'How do you punctuate lists?', definition: 'Commas separate items: Mustard, mayo, ketchup.' },
+    { term: 'How do you punctuate compound sentences?', definition: 'Comma before conjunction linking clauses: I bought a cat, and I left.' },
+    { term: 'How do you punctuate complex sentences?', definition: 'Comma after introductory phrase: Although it rained, we left.' },
+
+    // Semicolons
+    { term: 'When do you use semicolons with therefore/however?', definition: 'Use semicolon before therefore and however: The witness hesitated; however, he answered.' },
+    { term: 'When do you use semicolons in lists?', definition: 'In compound lists with commas: Atlanta, Georgia; Vail, Colorado' },
+    { term: 'What is the main use of semicolons?', definition: 'To connect closely related independent clauses; to link related ideas' },
+
+    // Colons
+    { term: 'When do you use a colon?', definition: 'Before a list or explanation: I like foods: Thai, Mexican.' },
+    { term: 'How many spaces after a colon?', definition: 'Two spaces after a colon (per formatting rules)' },
+
+    // Dashes
+    { term: 'What are dashes used for?', definition: 'Interruptions and stutters. Two dashes. Put a space on both sides.' },
+    { term: 'Do you capitalize after a dash?', definition: 'No, do not capitalize after a dash' },
+    { term: 'Can dashes start a sentence?', definition: 'No, dashes cannot start a sentence' },
+    { term: 'How do you show mistaken words with dashes?', definition: 'Show the dash: site—side' },
+    { term: 'How do you punctuate "excuse me"?', definition: 'When we have excuse me, put the dash: excuse me--' },
+
+    // Quotation Marks
+    { term: 'Do you capitalize inside quotation marks?', definition: 'Yes, capitalize first word inside quotes' },
+    { term: 'Where do periods and commas go with quotes?', definition: 'Periods and commas always go inside quotes' },
+    { term: 'Where do question marks go with quotes?', definition: 'Inside quotes only if the quoted text is a question: He asked, "Is that correct?"' },
+    { term: 'When do you put "this" in quotation marks?', definition: 'When referenced as a word' },
+
+    // Hyphens
+    { term: 'How do you write compound nouns with hyphens?', definition: 'check-in' },
+    { term: 'How do you write compound adjectives with hyphens?', definition: '12-gauge shotgun' },
+    { term: 'How do you write compound responses?', definition: 'Uh-huh, Huh-uh' },
+
+    // Oxford Comma
+    { term: 'When do you use the Oxford comma?', definition: 'Always use in lists before "and" or "or"' },
+
+    // Sentence Structure
+    { term: 'Can "And" or "But" start a sentence?', definition: 'Yes, "And" or "But" can start a sentence' },
+    { term: 'What do you do with partial words?', definition: 'Omit partial words, do not leave them' },
+    { term: 'What do you do with mistaken or repeated words?', definition: 'Leave mistaken words in the transcript' },
+    { term: 'What do you do with "um" and "hmm"?', definition: 'Ignore "um," "hmm" and similar sounds' },
+    { term: 'What do you always add when coming out of colloquy?', definition: 'Always add the byline' },
+
+    // Tricky Words
+    { term: 'What is the correct form: "gonna" or "going to"?', definition: 'Going to (not gonna)' },
+    { term: 'What is the correct form: "wanna" or "want to"?', definition: 'Want to (not wanna)' },
+    { term: 'What is the correct form: "aks" or "ask"?', definition: 'Ask (not aks)' },
+    { term: 'What is the correct form: "yup" or "yep"?', definition: 'Yep (not yup)' },
+    { term: 'What is the correct form: "pacifically" or "specifically"?', definition: 'Specifically (not pacifically)' },
+    { term: 'What is the correct form: "alright" or "all right"?', definition: 'All right (never alright)' },
+    { term: 'What is the difference between "sometime" and "some time"?', definition: 'sometime = at an unspecified time; some time = a period of time' },
+    { term: 'What is the correct form: "onto" or "on to"?', definition: 'On to (not onto)' },
+
+    // Acronyms
+    { term: 'Do acronyms have periods?', definition: 'No periods: NIH, NWS' }
+];
+
 
 // Built-in vocabulary provided by user
 const builtInTerms = [
@@ -2638,6 +2752,7 @@ function seedBuiltInTerms() {
     seedVocabularyArray(trialProceduresGameQA, '⚖️ Trial Procedures');
     seedVocabularyArray(legalVocabularyGameQA, '📜 Legal Vocabulary');
     seedVocabularyArray(medicalVocabularyGameQA, '🏥 Medical Vocabulary');
+    seedVocabularyArray(punctuationGameQA, '✍️ Punctuation & Writing Rules');
 
     if (changed) {
         saveToLocalStorage();
