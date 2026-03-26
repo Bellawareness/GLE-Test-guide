@@ -213,13 +213,19 @@
 
                 <div id="game-live" class="game-live hidden">
                     <div class="game-scoreboard">
-                        <div class="game-chip">Level: <span id="game-level">1</span></div>
-                        <div class="game-chip">Level Score: <span id="game-level-score">0</span>/<span id="game-level-size">10</span></div>
-                        <div class="game-chip">Overall Score: <span id="game-score">0</span></div>
-                        <div class="game-chip">Streak: <span id="game-streak">0</span></div>
-                        <div class="game-chip">Review Pile: <span id="game-review-count">0</span></div>
-                        <div class="game-chip">Pool Terms: <span id="game-pool-count">0</span></div>
+                        <div class="game-chip">Level <span id="game-level">1</span></div>
                         <div class="game-chip">Question <span id="game-current">1</span>/<span id="game-total">10</span></div>
+                        <div class="game-chip">🔥 Streak: <span id="game-streak">0</span></div>
+                        <div class="game-chip">📚 Remaining: <span id="game-terms-remaining">0</span></div>
+                    </div>
+
+                    <!-- Level Progress Tracker - Shows 10 dots for pass requirement -->
+                    <div class="level-progress-tracker">
+                        <div class="level-progress-label">Get 10 correct to pass:</div>
+                        <div id="level-progress-dots" class="level-progress-dots">
+                            <!-- 10 dots rendered by JS -->
+                        </div>
+                        <div class="level-progress-count"><span id="level-correct-count">0</span>/10 correct</div>
                     </div>
 
                     <div class="game-progress-bar">

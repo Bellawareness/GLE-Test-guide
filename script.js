@@ -3692,7 +3692,9 @@ function resetGameView() {
         correctCount: 0,
         wrongPile: [],
         mode: 'level',
-        autoAdvanceTimer: null
+        autoAdvanceTimer: null,
+        askedQuestionKeys: new Set(),  // Track asked questions to prevent repeats
+        levelCorrectAnswers: []  // Track which questions were answered correctly in current level
     };
 
     document.getElementById('game-setup').classList.remove('hidden');
@@ -3801,7 +3803,9 @@ function startGame() {
         correctCount: 0,
         wrongPile: [],
         mode: 'level',
-        autoAdvanceTimer: null
+        autoAdvanceTimer: null,
+        askedQuestionKeys: new Set(),  // Track asked questions to prevent repeats
+        levelCorrectAnswers: []  // Track which questions were answered correctly in current level
     };
 
     document.getElementById('game-setup').classList.add('hidden');
@@ -3814,13 +3818,20 @@ function startGame() {
 function startLevel(levelNumber) {
     clearGameAutoAdvance();
 
-    const startIndex = (levelNumber - 1) * gameState.levelSize;
-    const levelCards = gameState.sourcePool.slice(startIndex, startIndex + gameState.levelSize);
+    // Reset level-specific tracking
+    gameState.levelCorrectAnswers = [];
+    gameState.levelScore = 0;
 
-    if (levelCards.length === 0) {
+    // Filter out cards that have already been asked in this session
+    const availableCards = gameState.sourcePool.filter(card => {
+        const cardKey = getCardKey(card);
+        return !gameState.askedQuestionKeys.has(cardKey);
+    });
+
+    if (availableCards.length === 0) {
         showGameResult({
-            title: 'Challenge Complete',
-            message: 'All available terms have been completed across every level.',
+            title: 'Challenge Complete! 🎉',
+            message: 'Amazing! You\'ve completed ALL available questions. Start a new game to play again.',
             levelCorrect: gameState.levelSize,
             levelTotal: gameState.levelSize,
             allowRetry: false,
@@ -3832,14 +3843,32 @@ function startLevel(levelNumber) {
         return;
     }
 
-    const questionCards = [];
-    for (let i = 0; i < gameState.levelSize; i++) {
-        questionCards.push(levelCards[i % levelCards.length]);
+    // Take up to levelSize cards from available cards
+    const levelCards = availableCards.slice(0, Math.min(gameState.levelSize, availableCards.length));
+
+    if (levelCards.length < 4) {
+        showGameResult({
+            title: 'Challenge Complete! 🎉',
+            message: 'You\'ve answered most questions! Not enough remaining for a full level.',
+            levelCorrect: gameState.levelScore,
+            levelTotal: gameState.levelSize,
+            allowRetry: false,
+            allowNextLevel: false,
+            allowReview: gameState.wrongPile.length > 0,
+            hideLive: true
+        });
+        gameState.active = false;
+        return;
     }
 
-    const questions = buildLevelQuestions(questionCards, gameState.sourcePool);
+    // Mark these cards as asked
+    levelCards.forEach(card => {
+        gameState.askedQuestionKeys.add(getCardKey(card));
+    });
 
-    if (questions.length < gameState.levelSize) {
+    const questions = buildLevelQuestions(levelCards, gameState.sourcePool);
+
+    if (questions.length < levelCards.length) {
         alert('Some terms could not be used because there were not enough unique options. Add more terms and try again.');
         resetGameView();
         return;
@@ -3848,7 +3877,7 @@ function startLevel(levelNumber) {
     gameState.active = true;
     gameState.mode = 'level';
     gameState.level = levelNumber;
-    gameState.levelQuestions = questionCards;
+    gameState.levelQuestions = levelCards;
     gameState.levelScore = 0;
     gameState.questions = questions;
     gameState.currentQuestionIndex = 0;
@@ -3864,6 +3893,12 @@ function retryCurrentLevel() {
     if (!gameState.sourcePool.length) {
         return;
     }
+    // Remove current level's questions from asked set so they can be re-asked
+    gameState.levelQuestions.forEach(card => {
+        gameState.askedQuestionKeys.delete(getCardKey(card));
+    });
+    // Clear level tracking
+    gameState.levelCorrectAnswers = [];
     startLevel(gameState.level);
 }
 
@@ -3942,19 +3977,65 @@ function renderGameStatus() {
     const currentDisplay = Math.min(gameState.currentQuestionIndex + 1, total);
     const progress = total === 0 ? 0 : Math.round((currentDisplay / total) * 100);
 
+    // Calculate terms remaining (not yet asked in this session)
+    const totalTerms = gameState.sourcePoolCount || gameState.sourcePool.length;
+    const askedCount = gameState.askedQuestionKeys ? gameState.askedQuestionKeys.size : 0;
+    const termsRemaining = Math.max(0, totalTerms - askedCount);
+
     document.getElementById('game-level').textContent = gameState.mode === 'review' ? 'Review' : gameState.level;
-    document.getElementById('game-level-score').textContent = gameState.levelScore;
-    document.getElementById('game-level-size').textContent = total;
-    document.getElementById('game-score').textContent = gameState.score;
     document.getElementById('game-streak').textContent = gameState.streak;
-    document.getElementById('game-review-count').textContent = gameState.wrongPile.length;
-    const poolCountEl = document.getElementById('game-pool-count');
-    if (poolCountEl) {
-        poolCountEl.textContent = gameState.sourcePoolCount || gameState.sourcePool.length;
-    }
     document.getElementById('game-current').textContent = currentDisplay;
     document.getElementById('game-total').textContent = total;
     document.getElementById('game-progress-fill').style.width = `${progress}%`;
+
+    // Update terms remaining
+    const termsRemainingEl = document.getElementById('game-terms-remaining');
+    if (termsRemainingEl) {
+        termsRemainingEl.textContent = termsRemaining;
+    }
+
+    // Render progress dots
+    renderLevelProgressDots();
+}
+
+function renderLevelProgressDots() {
+    const dotsContainer = document.getElementById('level-progress-dots');
+    const correctCountEl = document.getElementById('level-correct-count');
+
+    if (!dotsContainer) return;
+
+    const totalRequired = gameState.levelSize || 10;
+    const currentQuestion = gameState.currentQuestionIndex;
+    const correctAnswers = gameState.levelCorrectAnswers || [];
+
+    // Build an array to track status of each question
+    let dotsHtml = '';
+    for (let i = 0; i < totalRequired; i++) {
+        let dotClass = 'progress-dot';
+        let content = i + 1;
+
+        if (correctAnswers.includes(i)) {
+            // This question was answered correctly
+            dotClass += ' correct';
+            content = '✓';
+        } else if (i < currentQuestion && !correctAnswers.includes(i)) {
+            // This question was answered incorrectly (already passed but not in correct list)
+            dotClass += ' incorrect';
+            content = '✗';
+        } else if (i === currentQuestion) {
+            // Current question
+            dotClass += ' current';
+        }
+
+        dotsHtml += `<div class="${dotClass}">${content}</div>`;
+    }
+
+    dotsContainer.innerHTML = dotsHtml;
+
+    // Update correct count
+    if (correctCountEl) {
+        correctCountEl.textContent = gameState.levelScore || 0;
+    }
 }
 
 function selectGameOption(index) {
@@ -3984,6 +4065,7 @@ function evaluateGameAnswer(selectedIndex) {
         gameState.streak += 1;
         gameState.correctCount += 1;
         gameState.levelScore += 1;
+        gameState.levelCorrectAnswers.push(gameState.currentQuestionIndex);  // Track correct answer position
         if (gameState.mode === 'review') {
             removeFromWrongPile(question.card);
         }
