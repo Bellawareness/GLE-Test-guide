@@ -1164,6 +1164,52 @@ const punctuationGameQA = [
     { term: 'Do acronyms have periods?', definition: 'No periods: NIH, NWS' }
 ];
 
+// Foreign Terms Q&A (GLE Georgia Vocabulary)
+const foreignTermsGameQA = [
+    { term: 'al fresco', definition: 'Outdoor, open air. Example: dining al fresco' },
+    { term: 'au courant (oh-curahn)', definition: 'Up-to-date, currently informed. Example: trying to stay or dress au courant' },
+    { term: 'au poivre (oh-pwauv)', definition: 'Served with coarsely ground black pepper. Example: steak au poivre' },
+    { term: 'avant-garde (avahnt-gard)', definition: 'A group that creates new or experimental concepts, especially in the arts. Example: the avant-garde in the film industry' },
+    { term: 'bon mot (bone-mo or bahn-mo)', definition: 'A clever remark (good word). Example: his bons mots were being repeated' },
+    { term: 'bon vivant (bon-vee-vont)', definition: 'A sociable person who has cultivated and refined tastes especially with respect to food and drink. Example: She has become a bon vivant since moving to New York City.' },
+    { term: 'carte blanche (cart blonch)', definition: 'Given full discretionary power. Example: She was given carte blanche in picking furniture.' },
+    { term: 'cause célèbre (cause celeb)', definition: 'A legal case, person or incident that excites widespread interest. Example: He became the next cause célèbre after the incident.' },
+    { term: 'chutzpah (hootspa)', definition: 'Supreme confidence, gall. Example: It took a lot of chutzpah to stand up to him the way she did.' },
+    { term: 'cognoscenti (kon-ya-shenti)', definition: 'A person who has expert knowledge in a subject. Example: a computer cognoscenti' },
+    { term: 'coup d\'état (koo-day-tah)', definition: 'The violent overthrow or alteration of an existing government by a small group. Example: a military coup d\'état of the dictator' },
+    { term: 'coup de grâce (koo-day-grah)', definition: 'A decisive finishing blow, act, or event. Example: The decision to cut funding is the coup de grâce to the governor\'s proposal.' },
+    { term: 'cul-de-sac', definition: 'A street or passage closed at one end. Example: Our house is located in a cul-de-sac' },
+    { term: 'de rigueur (de-rig-errr)', definition: 'Required by fashion, etiquette, or custom. Example: tattoos, of course, being de rigueur among the poetry set.' },
+    { term: 'dolce vita (dol-chay-veeta)', definition: 'The good life, a life of self-indulgence. Example: He\'s now living la dolce vita.' },
+    { term: 'double entendre (on-ton-dra)', definition: 'A word or expression capable of two interpretations with one usually risqué. Example: flirty talk full of double entendres' },
+    { term: 'esprit de corps (espree-decor)', definition: 'A common spirit existing in the members of a group, causing them to bond tightly.' },
+    { term: 'fait accompli', definition: 'A thing accomplished and presumably irreversible. Example: The members were presented with a fait accompli instead of being called to a meeting to discuss the policy change.' },
+    { term: 'faux (fo)', definition: 'Fake. Example: faux leather' },
+    { term: 'faux pas (fo-paw)', definition: 'A significant or embarrassing error or mistake or blunder.' },
+    { term: 'femme fatale (fim-fa-tal)', definition: 'A seductive woman who lures men into dangerous or compromising situations.' },
+    { term: 'force majeure (force-mazure)', definition: 'Superior or irresistible force, act of God. Example: the tornado was a force majeure' },
+    { term: 'gauche (gosh with a long o)', definition: 'Crude, lacking social experience or grace.' },
+    { term: 'glasnost (glaz-noast)', definition: 'A Soviet policy permitting open discussion of political and social issues and freer dissemination of news and information.' },
+    { term: 'gulag (goo-log)', definition: 'The penal system of the Soviet Union consisting of a network of labor camps.' },
+    { term: 'imbroglio (im-bro-lio)', definition: 'An acutely painful or embarrassing misunderstanding.' },
+    { term: 'intelligentsia', definition: 'Intellectuals who form an artistic, social, or political vanguard or elite.' },
+    { term: 'jihad', definition: 'A holy war waged on behalf of Islam as a religious duty.' },
+    { term: 'kamikaze', definition: 'An airplane containing explosives to be flown in a suicide crash on a target.' },
+    { term: 'laissez faire (lah-zay-fair)', definition: 'A doctrine opposing governmental interference in economic affairs beyond the minimum necessary for the maintenance of peace and property rights. A philosophy characterized by deliberate abstention from direction or interference especially with individual freedom of choice and action.' },
+    { term: 'noblesse oblige', definition: 'The obligation of honorable, generous, and responsible behavior associated with high rank or birth.' },
+    { term: 'nom de plume', definition: 'Pseudonym, pen name.' },
+    { term: 'perestroika', definition: 'The policy of economic and governmental reform instituted by Mikhail Gorbachev in the Soviet Union during the mid-1980s, often argued to be a significant cause of the collapse of the Eastern Bloc and the dissolution of the Soviet Union.' },
+    { term: 'pièce de résistance (pee-es de ree-sis-tahns)', definition: 'A showpiece, masterpiece, the chief dish of a meal.' },
+    { term: 'sans', definition: 'Without. Example: Sansabelt pants required no belt' },
+    { term: 'savoir-faire', definition: 'Charm, the ability to behave in a correct and confident way in different situations.' },
+    { term: 'schlep', definition: 'To drag or haul, to proceed or move especially slowly, tediously, awkwardly, or carelessly.' },
+    { term: 'shtick', definition: 'A comic routine or "bit".' },
+    { term: 'tête-à-tête (tet-a-tet)', definition: 'A private conversation between two persons, face to face.' },
+    { term: 'tour de force', definition: 'A feat or display of strength, skill, or ingenuity.' },
+    { term: 'verboten', definition: 'Forbidden or prohibited.' },
+    { term: 'Zeitgeist', definition: 'The general intellectual, moral, and cultural climate of an era.' }
+];
+
 
 // Built-in vocabulary provided by user
 const builtInTerms = [
@@ -2753,6 +2799,7 @@ function seedBuiltInTerms() {
     seedVocabularyArray(legalVocabularyGameQA, '📜 Legal Vocabulary');
     seedVocabularyArray(medicalVocabularyGameQA, '🏥 Medical Vocabulary');
     seedVocabularyArray(punctuationGameQA, '✍️ Punctuation & Writing Rules');
+    seedVocabularyArray(foreignTermsGameQA, '🌍 Foreign Terms');
 
     if (changed) {
         saveToLocalStorage();
